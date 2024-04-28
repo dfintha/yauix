@@ -1,13 +1,11 @@
-YAUIX - Yet Another UI eXtension
-================================
+# YAUIX - Yet Another UI eXtension
 
 This add-on is my simple attempt to extend the UI of the Classic edition of
 World of Warcraft. I've found myself often installing multiple add-ons, while
 only using a small part of their functionality, so I've decided to write my
 own interface extension add-on with only the functionality that I actually need.
 
-Features
---------
+## Features
 
 - Show the amount and percentage (when applicable) of the target's health and
   resource bars.
@@ -16,21 +14,7 @@ Features
 - Show the sell price and item level in item tooltips.
 - Show the creature family of creatures where applicable.
 
-Known Bugs
-----------
-
-- Hunter pets should be considered pseudo-player characters, and as such, their
-  health should not be shown, only the percentage of it.
-
-Planned Features
-----------------
-
-- Show the player's coordinates in a frame under the mini-map.
-- Show unit and item IDs in their respective tooltips.
-- Show the experience rewarded by quests in the Quest Log.
- 
-License
--------
+## License
 
 The add-on is under WTFPL. For more information, see the LICENSE file.
 
