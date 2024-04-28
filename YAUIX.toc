@@ -1,0 +1,7 @@
+## Interface: 11502
+## Title: YAUIX
+## Notes: Yet Another UI eXtension
+## Author: dfintha
+## Version: 0.1
+YAUIX.xml
+YAUIX.lua
