@@ -239,6 +239,7 @@ end
 
 function YAUIX_OnLoad(self)
     self:RegisterEvent("UNIT_HEALTH_FREQUENT");
+    self:RegisterEvent("UNIT_POWER_FREQUENT");
     self:RegisterEvent("CHAT_MSG_COMBAT_XP_GAIN");
 
     hooksecurefunc(
@@ -265,7 +266,9 @@ end
 function YAUIX_OnEvent(self, event, ...)
     local arg1, arg2, arg3, arg4, arg5, arg6 = ...;
     if event == "UNIT_HEALTH_FREQUENT" then
-        YAUIX_UpdateTargetFrame(nil);
+        YAUIX_FormatTargetHealthBar();
+    elseif event == "UNIT_POWER_FREQUENT" then
+        YAUIX_FormatTargetResourceBar();
     elseif event == "CHAT_MSG_COMBAT_XP_GAIN" then
         YAUIX_OnChatMsgCombatXPGain(self, arg1);
     end
