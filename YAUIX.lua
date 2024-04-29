@@ -33,7 +33,24 @@ local function YAUIX_OnChatMsgCombatXPGain(self, text, ...)
 end
 
 local function YAUIX_OnTooltipSetUnit(tooltip)
-    local unit = select(1, tooltip:GetUnit());
+    local unit = select(2, tooltip:GetUnit());
+
+    local guid = UnitGUID(unit);
+    if string.sub(guid, 1, 9) == "Creature-" then
+        local regex = "-%d+-%d+-%d+-%d+-(%d+)-%d+";
+        local id = select(3, string.find(guid, regex));
+        for i = 1, select("#", tooltip:GetRegions()) do
+            local region = select(i, tooltip:GetRegions());
+            if region and region:GetObjectType() == "FontString" then
+                local text = region:GetText();
+                if text then
+                    region:SetText(text .. " [" .. id .. "]");
+                    break;
+                end
+            end
+        end
+    end
+
     local family = UnitCreatureFamily(unit);
     if family then
         GameTooltip:AddLine("Creature Family: " .. family, 1, 1, 1);
