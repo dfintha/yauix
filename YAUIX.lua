@@ -1,7 +1,7 @@
 local YAUIX_CurrentItemBagIndex = nil;
 local YAUIX_CurrentItemSlotIndex = nil;
 
-local function YAUIX_OnChatMsgCombatXPGain(self, text, ...)
+local function YAUIX_OnChatMsgCombatXPGain(text)
     if not string.find(text, "dies, you gain") then
         return;
     end
@@ -313,6 +313,6 @@ function YAUIX_OnEvent(self, event, ...)
     elseif event == "UNIT_POWER_FREQUENT" then
         YAUIX_FormatTargetResourceBar();
     elseif event == "CHAT_MSG_COMBAT_XP_GAIN" then
-        YAUIX_OnChatMsgCombatXPGain(self, arg1);
+        YAUIX_OnChatMsgCombatXPGain(arg1);
     end
 end
