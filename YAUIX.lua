@@ -42,8 +42,21 @@ local function YAUIX_OnTooltipSetUnit(tooltip)
 end
 
 local function YAUIX_OnTooltipSetItem(tooltip)
-    local link = select(1, tooltip:GetItem())
+    local link = select(2, tooltip:GetItem())
     local _, _, _, level, _, _, _, _, slot, _, price = GetItemInfo(link);
+
+    local id = string.sub(link, 18, string.len(link));
+    id = string.sub(id, 1, string.find(id, ":") - 1);
+    for i = 1, select("#", tooltip:GetRegions()) do
+        local region = select(i, tooltip:GetRegions());
+        if region and region:GetObjectType() == "FontString" then
+            local text = region:GetText();
+            if text then
+                region:SetText(text .. " [" .. id .. "]");
+                break;
+            end
+        end
+    end
 
     local count = 0;
     if YAUIX_CurrentItemBagIndex and YAUIX_CurrentItemSlotIndex then
