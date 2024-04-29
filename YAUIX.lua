@@ -59,7 +59,7 @@ local function YAUIX_OnTooltipSetUnit(tooltip)
 end
 
 local function YAUIX_OnTooltipSetItem(tooltip)
-    local link = select(2, tooltip:GetItem())
+    local link = select(2, tooltip:GetItem());
     local _, _, _, level, _, _, _, _, slot, _, price = GetItemInfo(link);
 
     local id = string.sub(link, 18, string.len(link));
