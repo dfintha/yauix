@@ -214,6 +214,10 @@ local function YAUIX_FormatTargetHealthBar()
 end
 
 local function YAUIX_FormatTargetResourceBar()
+    if not UnitGUID("target") then
+        return;
+    end
+
     if not TargetFrameManaBar.ResourceOverlay then
         TargetFrameManaBar.ResourceOverlay =
             TargetFrameManaBar:CreateFontString(
