@@ -175,6 +175,10 @@ local function YAUIX_FormatHealthOrResourceBar(overlay, parent, text)
 end
 
 local function YAUIX_FormatTargetHealthBar()
+    if not UnitGUID("target") then
+        return;
+    end
+
     if not TargetFrameHealthBar.HealthOverlay then
         TargetFrameHealthBar.HealthOverlay =
             TargetFrameHealthBar:CreateFontString(
@@ -188,9 +192,14 @@ local function YAUIX_FormatTargetHealthBar()
     local percent = math.floor(current / total * 100);
 
     local text = "";
+    local player = UnitIsPlayer("target") and
+                   (UnitGUID("target") ~= UnitGUID("player"));
+    local pet = string.sub(UnitGUID("target"), 1, 4) == "Pet-" and
+                (UnitGUID("target") ~= UnitGUID("playerpet"));
+
     if current == 0 then
         text = "";
-    elseif UnitIsPlayer("target") then
+    elseif player or pet then
         text = percent .. "%";
     else
         text = YAUIX_AbbreviateNumber(current) .. "/" ..
