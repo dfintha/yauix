@@ -2,6 +2,6 @@
 ## Title: YAUIX
 ## Notes: Yet Another UI eXtension
 ## Author: dfintha
-## Version: 0.1
+## Version: 0.2
 YAUIX.xml
 YAUIX.lua

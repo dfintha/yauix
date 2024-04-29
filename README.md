@@ -13,6 +13,7 @@ own interface extension add-on with only the functionality that I actually need.
   tracker, and increase the font size of it slightly.
 - Show the sell price and item level in item tooltips.
 - Show the creature family of creatures where applicable.
+- Show the IDs of units and items where applicable.
 
 ## License
 
