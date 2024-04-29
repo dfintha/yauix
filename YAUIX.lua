@@ -213,7 +213,7 @@ local function YAUIX_FormatTargetResourceBar()
             );
     end
 
-    local type = select(1, UnitPowerType("target"));
+    local type = select(2, UnitPowerType("target"));
     local current = UnitPower("target");
     local total = UnitPowerMax("target");
     local percent = math.floor(current / total * 100);
