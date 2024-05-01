@@ -204,28 +204,28 @@ local function YAUIX_FormatHealthOrResourceBar(overlay, parent, text)
     overlay:SetJustifyV("CENTER");
 end
 
-local function YAUIX_FormatTargetHealthBar()
-    if not UnitGUID("target") then
+local function YAUIX_FormatHealthBar(unit, parent)
+    if not UnitGUID(unit) then
         return;
     end
 
-    if not TargetFrameHealthBar.HealthOverlay then
-        TargetFrameHealthBar.HealthOverlay =
-            TargetFrameHealthBar:CreateFontString(
+    if not parent.HealthOverlay then
+        parent.HealthOverlay =
+            parent:CreateFontString(
                 "HealthOverlayFontString",
                 "OVERLAY"
             );
     end
 
-    local current = UnitHealth("target");
-    local total = UnitHealthMax("target");
+    local current = UnitHealth(unit);
+    local total = UnitHealthMax(unit);
     local percent = math.floor(current / total * 100);
 
     local text = "";
-    local player = UnitIsPlayer("target") and
-                   (UnitGUID("target") ~= UnitGUID("player"));
-    local pet = string.sub(UnitGUID("target"), 1, 4) == "Pet-" and
-                (UnitGUID("target") ~= UnitGUID("playerpet"));
+    local player = UnitIsPlayer(unit) and
+                   (UnitGUID(unit) ~= UnitGUID("player"));
+    local pet = string.sub(UnitGUID(unit), 1, 4) == "Pet-" and
+                (UnitGUID(unit) ~= UnitGUID("playerpet"));
 
     if current == 0 then
         text = "";
@@ -236,29 +236,25 @@ local function YAUIX_FormatTargetHealthBar()
                YAUIX_AbbreviateNumber(total) .. " (" .. percent .. "%)";
     end
 
-    YAUIX_FormatHealthOrResourceBar(
-        TargetFrameHealthBar.HealthOverlay,
-        TargetFrameHealthBar,
-        text
-    );
+    YAUIX_FormatHealthOrResourceBar(parent.HealthOverlay, parent, text);
 end
 
-local function YAUIX_FormatTargetResourceBar()
-    if not UnitGUID("target") then
+local function YAUIX_FormatResourceBar(unit, parent)
+    if not UnitGUID(unit) then
         return;
     end
 
-    if not TargetFrameManaBar.ResourceOverlay then
-        TargetFrameManaBar.ResourceOverlay =
-            TargetFrameManaBar:CreateFontString(
+    if not parent.ResourceOverlay then
+        parent.ResourceOverlay =
+            parent:CreateFontString(
                 "ResourceOverlayFontString",
                 "OVERLAY"
             );
     end
 
-    local type = select(2, UnitPowerType("target"));
-    local current = UnitPower("target");
-    local total = UnitPowerMax("target");
+    local type = select(2, UnitPowerType(unit));
+    local current = UnitPower(unit);
+    local total = UnitPowerMax(unit);
     local percent = math.floor(current / total * 100);
     local text = YAUIX_AbbreviateNumber(current) .. "/" ..
                   YAUIX_AbbreviateNumber(total);
@@ -268,16 +264,12 @@ local function YAUIX_FormatTargetResourceBar()
         text = text .. " (" .. percent .. "%)";
     end
 
-    YAUIX_FormatHealthOrResourceBar(
-        TargetFrameManaBar.ResourceOverlay,
-        TargetFrameManaBar,
-        text
-    );
+    YAUIX_FormatHealthOrResourceBar(parent.ResourceOverlay, parent, text);
 end
 
 local function YAUIX_UpdateTargetFrame(self)
-    YAUIX_FormatTargetHealthBar();
-    YAUIX_FormatTargetResourceBar();
+    YAUIX_FormatHealthBar("target", TargetFrameHealthBar);
+    YAUIX_FormatResourceBar("target", TargetFrameManaBar);
 end
 
 function YAUIX_OnLoad(self)
@@ -309,9 +301,9 @@ end
 function YAUIX_OnEvent(self, event, ...)
     local arg1, arg2, arg3, arg4, arg5, arg6 = ...;
     if event == "UNIT_HEALTH_FREQUENT" then
-        YAUIX_FormatTargetHealthBar();
+        YAUIX_FormatHealthBar("target", TargetFrameHealthBar);
     elseif event == "UNIT_POWER_FREQUENT" then
-        YAUIX_FormatTargetResourceBar();
+        YAUIX_FormatResourceBar("target", TargetFrameManaBar);
     elseif event == "CHAT_MSG_COMBAT_XP_GAIN" then
         YAUIX_OnChatMsgCombatXPGain(arg1);
     end
