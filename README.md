@@ -7,8 +7,8 @@ own interface extension add-on with only the functionality that I actually need.
 
 ## Features
 
-- Show the amount and percentage (when applicable) of the target's health and
-  resource bars.
+- Show the amount and percentage (when applicable) of the player's and
+  target's health and resource bars.
 - Show the level, difficulty, and group modifiers of quests in the quest
   tracker, and increase the font size of it slightly.
 - Show the sell price and item level in item tooltips.

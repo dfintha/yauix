@@ -193,6 +193,16 @@ local function YAUIX_AbbreviateNumber(number)
 end
 
 local function YAUIX_FormatHealthOrResourceBar(overlay, parent, text)
+    if parent.LeftText then
+        parent.LeftText:SetFont("Fonts\\FRIZQT__.TTF", 0.1, "");
+    end
+    if parent.RightText then
+        parent.RightText:SetFont("Fonts\\FRIZQT__.TTF", 0.1, "");
+    end
+    if parent.TextString then
+        parent.TextString:SetFont("Fonts\\FRIZQT__.TTF", 0.1, "");
+    end
+
     overlay:SetParent(parent);
     overlay:SetFont("Fonts\\FRIZQT__.TTF", 9.5, "OUTLINE");
     overlay:SetText(text);
@@ -296,14 +306,19 @@ function YAUIX_OnLoad(self)
 
     GameTooltip:HookScript("OnTooltipSetUnit", YAUIX_OnTooltipSetUnit);
     GameTooltip:HookScript("OnTooltipSetItem", YAUIX_OnTooltipSetItem);
+
+    YAUIX_FormatHealthBar("player", PlayerFrameHealthBar);
+    YAUIX_FormatResourceBar("player", PlayerFrameManaBar);
 end
 
 function YAUIX_OnEvent(self, event, ...)
     local arg1, arg2, arg3, arg4, arg5, arg6 = ...;
     if event == "UNIT_HEALTH_FREQUENT" then
         YAUIX_FormatHealthBar("target", TargetFrameHealthBar);
+        YAUIX_FormatHealthBar("player", PlayerFrameHealthBar);
     elseif event == "UNIT_POWER_FREQUENT" then
         YAUIX_FormatResourceBar("target", TargetFrameManaBar);
+        YAUIX_FormatResourceBar("player", PlayerFrameManaBar);
     elseif event == "CHAT_MSG_COMBAT_XP_GAIN" then
         YAUIX_OnChatMsgCombatXPGain(arg1);
     end
