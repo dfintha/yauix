@@ -282,6 +282,54 @@ local function YAUIX_UpdateTargetFrame(self)
     YAUIX_FormatResourceBar("target", TargetFrameManaBar);
 end
 
+local function YAUIX_UpdateQuestLog()
+    local parent = QuestLogDetailScrollChildFrame;
+    if not parent.ExperienceRewardFontString then
+        parent.ExperienceRewardFontString = parent:CreateFontString(
+            "ExperienceRewardFontString",
+            "BACKGROUND"
+        );
+    end
+
+    local anchor = nil;
+    if QuestLogSpellLearnText:IsVisible() then
+        anchor = QuestLogSpellLearnText;
+    elseif QuestLogItem7IconTexture:IsVisible() then
+        anchor = QuestLogItem7IconTexture;
+    elseif QuestLogItem5IconTexture:IsVisible() then
+        anchor = QuestLogItem5IconTexture;
+    elseif QuestLogItem3IconTexture:IsVisible() then
+        anchor = QuestLogItem3IconTexture;
+    elseif QuestLogItem1IconTexture:IsVisible() then
+        anchor = QuestLogItem1IconTexture;
+    elseif QuestLogItemReceiveText:IsVisible() then
+        anchor = QuestLogItemReceiveText;
+    elseif QuestLogItemChooseText:IsVisible() then
+        anchor = QuestLogItemChooseText;
+    elseif QuestLogRewardTitleText:IsVisible() then
+        anchor = QuestLogRewardTitleText;
+    else
+        anchor = QuestLogQuestDescription;
+    end
+
+    if not anchor then
+        return;
+    end
+
+    local id = GetQuestLogSelection();
+    local experience = GetQuestLogRewardXP();
+    local text = parent.ExperienceRewardFontString;
+    text:SetParent(parent);
+    text:SetFont(QuestLogQuestDescription:GetFont());
+    text:SetText("You will receive " .. experience .. " experience.");
+    text:SetTextColor(0, 0, 0.75, 1);
+    text:SetPoint("TOPLEFT", anchor, "BOTTOMLEFT", 0, -10);
+    text:SetWidth(QuestLogQuestDescription:GetWidth());
+    text:SetHeight(30);
+    text:SetJustifyH("LEFT");
+    text:SetJustifyV("TOP");
+end
+
 function YAUIX_OnLoad(self)
     self:RegisterEvent("UNIT_HEALTH_FREQUENT");
     self:RegisterEvent("UNIT_POWER_FREQUENT");
@@ -303,6 +351,10 @@ function YAUIX_OnLoad(self)
     hooksecurefunc(
         "TargetFrame_Update",
         YAUIX_UpdateTargetFrame
+    );
+    hooksecurefunc(
+        "QuestLog_UpdateQuestDetails",
+        YAUIX_UpdateQuestLog
     );
 
     GameTooltip:HookScript("OnTooltipSetUnit", YAUIX_OnTooltipSetUnit);
