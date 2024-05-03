@@ -114,7 +114,7 @@ local function YAUIX_OnTooltipSetItem(tooltip)
     GameTooltip:Show();
 end
 
-local function YAUIX_QuestWatch_Update()
+local function YAUIX_UpdateQuestTracker()
     local line = 1;
     for i = 1, GetNumQuestWatches() do
         local index = GetQuestIndexForWatch(i);
@@ -290,7 +290,7 @@ function YAUIX_OnLoad(self)
 
     hooksecurefunc(
         "QuestWatch_Update",
-        YAUIX_QuestWatch_Update
+        YAUIX_UpdateQuestTracker
     );
     hooksecurefunc(
         "ContainerFrameItemButton_OnEnter",
