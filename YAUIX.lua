@@ -286,6 +286,7 @@ function YAUIX_OnLoad(self)
     self:RegisterEvent("UNIT_HEALTH_FREQUENT");
     self:RegisterEvent("UNIT_POWER_FREQUENT");
     self:RegisterEvent("CHAT_MSG_COMBAT_XP_GAIN");
+    self:RegisterEvent("PLAYER_ENTERING_WORLD");
 
     hooksecurefunc(
         "QuestWatch_Update",
@@ -318,6 +319,9 @@ function YAUIX_OnEvent(self, event, ...)
         YAUIX_FormatHealthBar("player", PlayerFrameHealthBar);
     elseif event == "UNIT_POWER_FREQUENT" then
         YAUIX_FormatResourceBar("target", TargetFrameManaBar);
+        YAUIX_FormatResourceBar("player", PlayerFrameManaBar);
+    elseif event == "PLAYER_ENTERING_WORLD" then
+        YAUIX_FormatHealthBar("player", PlayerFrameHealthBar);
         YAUIX_FormatResourceBar("player", PlayerFrameManaBar);
     elseif event == "CHAT_MSG_COMBAT_XP_GAIN" then
         YAUIX_OnChatMsgCombatXPGain(arg1);
