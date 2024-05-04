@@ -203,13 +203,13 @@ local function YAUIX_HideFontString(element)
     end
 end
 
-local function YAUIX_FormatHealthOrResourceBar(overlay, parent, text)
+local function YAUIX_FormatHealthOrResourceBar(overlay, parent, text, size)
     YAUIX_HideFontString(parent.LeftText);
     YAUIX_HideFontString(parent.RightText);
     YAUIX_HideFontString(parent.TextString);
 
     overlay:SetParent(parent);
-    overlay:SetFont("Fonts\\FRIZQT__.TTF", 9.5, "OUTLINE");
+    overlay:SetFont("Fonts\\FRIZQT__.TTF", size, "OUTLINE");
     overlay:SetText(text);
     overlay:SetTextColor(1, 1, 1, 1);
     overlay:SetPoint("TOPLEFT", parent, "TOPLEFT", 0, 0);
@@ -251,7 +251,7 @@ local function YAUIX_FormatHealthBar(unit, parent)
                YAUIX_AbbreviateNumber(total) .. " (" .. percent .. "%)";
     end
 
-    YAUIX_FormatHealthOrResourceBar(parent.HealthOverlay, parent, text);
+    YAUIX_FormatHealthOrResourceBar(parent.HealthOverlay, parent, text, 9.5);
 end
 
 local function YAUIX_FormatResourceBar(unit, parent)
@@ -279,7 +279,7 @@ local function YAUIX_FormatResourceBar(unit, parent)
         text = text .. " (" .. percent .. "%)";
     end
 
-    YAUIX_FormatHealthOrResourceBar(parent.ResourceOverlay, parent, text);
+    YAUIX_FormatHealthOrResourceBar(parent.ResourceOverlay, parent, text, 9.5);
 end
 
 local function YAUIX_UpdateTargetFrame(self)
