@@ -3,6 +3,9 @@ local YAUIX_CurrentItemSlotIndex = nil;
 local YAUIX_InMerchantFrame = false;
 
 local function YAUIX_DisplayRequiredKillCountToLevelUp(text)
+    if UnitLevel("player") == 60 then
+        return;
+    end
     if not string.find(text, "dies, you gain") then
         return;
     end
@@ -285,6 +288,10 @@ local function YAUIX_UpdateTargetFrame(self)
 end
 
 local function YAUIX_UpdateQuestLog()
+    if UnitLevel("player") == 60 then
+        return;
+    end
+
     local parent = QuestLogDetailScrollChildFrame;
     if not parent.ExperienceRewardFontString then
         parent.ExperienceRewardFontString = parent:CreateFontString(
