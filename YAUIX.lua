@@ -181,15 +181,12 @@ local function YAUIX_ContainerFrameItemButton_OnLeave(self)
 end
 
 local function YAUIX_AbbreviateNumber(number)
-    suffix = "";
     if number > 1000000 then
-        number = math.floor(number / 100000) / 10;
-        suffix = "M";
+        return string.format("%.01fM", number / 1000000);
     elseif number > 1000 then
-        number = math.floor(number / 100) / 10;
-        suffix = "K";
+        return string.format("%.01fK", number / 1000);
     end
-    return number .. suffix;
+    return string.format("%d", number);
 end
 
 local function YAUIX_FormatHealthOrResourceBar(overlay, parent, text)
