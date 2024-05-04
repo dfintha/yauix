@@ -21,7 +21,7 @@ local function YAUIX_HideFontString(element)
     end
 end
 
-local function YAUIX_FormatBarOverlay(overlay, parent, size)
+local function YAUIX_FormatBarOverlay(overlay, parent, anchor, size)
     YAUIX_HideFontString(parent.LeftText);
     YAUIX_HideFontString(parent.RightText);
     YAUIX_HideFontString(parent.TextString);
@@ -29,9 +29,9 @@ local function YAUIX_FormatBarOverlay(overlay, parent, size)
     overlay:SetParent(parent);
     overlay:SetFont("Fonts\\FRIZQT__.TTF", size, "OUTLINE");
     overlay:SetTextColor(1, 1, 1, 1);
-    overlay:SetPoint("TOPLEFT", parent, "TOPLEFT", 0, 0);
-    overlay:SetWidth(parent:GetWidth());
-    overlay:SetHeight(parent:GetHeight());
+    overlay:SetPoint("TOPLEFT", anchor, "TOPLEFT", 0, 0);
+    overlay:SetWidth(anchor:GetWidth());
+    overlay:SetHeight(anchor:GetHeight());
     overlay:SetJustifyH("CENTER");
     overlay:SetJustifyV("CENTER");
 end
@@ -235,7 +235,7 @@ local function YAUIX_FormatHealthBar(unit, parent)
                 "HealthOverlayFontString",
                 "OVERLAY"
             );
-        YAUIX_FormatBarOverlay(parent.HealthOverlay, parent, 9.5);
+        YAUIX_FormatBarOverlay(parent.HealthOverlay, parent, parent, 9.5);
     end
 
     local current = UnitHealth(unit);
@@ -271,7 +271,7 @@ local function YAUIX_FormatResourceBar(unit, parent)
                 "ResourceOverlayFontString",
                 "OVERLAY"
             );
-        YAUIX_FormatBarOverlay(parent.ResourceOverlay, parent, 9.5);
+        YAUIX_FormatBarOverlay(parent.ResourceOverlay, parent, parent, 9.5);
     end
 
     local type = select(2, UnitPowerType(unit));
