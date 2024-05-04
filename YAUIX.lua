@@ -308,20 +308,24 @@ local function YAUIX_UpdateQuestLog()
     end
 
     local anchor = nil;
-    if QuestLogSpellLearnText:IsVisible() then
-        anchor = QuestLogSpellLearnText;
+    if QuestLogItem8IconTexture:IsVisible() then
+        anchor = QuestLogItem8IconTexture;
     elseif QuestLogItem7IconTexture:IsVisible() then
         anchor = QuestLogItem7IconTexture;
+    elseif QuestLogItem6IconTexture:IsVisible() then
+        anchor = QuestLogItem6IconTexture;
     elseif QuestLogItem5IconTexture:IsVisible() then
         anchor = QuestLogItem5IconTexture;
+    elseif QuestLogItem4IconTexture:IsVisible() then
+        anchor = QuestLogItem4IconTexture;
     elseif QuestLogItem3IconTexture:IsVisible() then
         anchor = QuestLogItem3IconTexture;
+    elseif QuestLogItem2IconTexture:IsVisible() then
+        anchor = QuestLogItem2IconTexture;
     elseif QuestLogItem1IconTexture:IsVisible() then
         anchor = QuestLogItem1IconTexture;
     elseif QuestLogItemReceiveText:IsVisible() then
         anchor = QuestLogItemReceiveText;
-    elseif QuestLogItemChooseText:IsVisible() then
-        anchor = QuestLogItemChooseText;
     elseif QuestLogRewardTitleText:IsVisible() then
         anchor = QuestLogRewardTitleText;
     else
