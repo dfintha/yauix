@@ -2,8 +2,8 @@
     <Script file="YAUIX.lua"/>
     <Frame name="YAUIXFrame" inherits="BackdropTemplate">
         <Scripts>
-            <OnLoad function="YAUIX_OnLoad" />
-            <OnEvent function="YAUIX_OnEvent" />
+            <OnLoad function="YAUIX_Initialize" />
+            <OnEvent function="YAUIX_HandleIncomingEvent" />
         </Scripts>
     </Frame>
 </Ui>

@@ -1,7 +1,7 @@
 local YAUIX_CurrentItemBagIndex = nil;
 local YAUIX_CurrentItemSlotIndex = nil;
 
-local function YAUIX_OnChatMsgCombatXPGain(text)
+local function YAUIX_DisplayRequiredKillCountToLevelUp(text)
     if not string.find(text, "dies, you gain") then
         return;
     end
@@ -32,7 +32,7 @@ local function YAUIX_OnChatMsgCombatXPGain(text)
     );
 end
 
-local function YAUIX_OnTooltipSetUnit(tooltip)
+local function YAUIX_UpdateUnitTooltip(tooltip)
     local unit = select(2, tooltip:GetUnit());
 
     local guid = UnitGUID(unit);
@@ -58,7 +58,7 @@ local function YAUIX_OnTooltipSetUnit(tooltip)
     GameTooltip:Show();
 end
 
-local function YAUIX_OnTooltipSetItem(tooltip)
+local function YAUIX_UpdateItemTooltip(tooltip)
     local link = select(2, tooltip:GetItem());
     local _, _, _, level, _, _, _, _, slot, _, price = GetItemInfo(link);
 
@@ -170,12 +170,12 @@ local function YAUIX_UpdateQuestTracker()
     end
 end
 
-local function YAUIX_ContainerFrameItemButton_OnEnter(self)
+local function YAUIX_SetCurrentItem(self)
     YAUIX_CurrentItemBagIndex = self:GetParent():GetID();
     YAUIX_CurrentItemSlotIndex = self:GetID();
 end
 
-local function YAUIX_ContainerFrameItemButton_OnLeave(self)
+local function YAUIX_ClearCurrentItem(self)
     YAUIX_CurrentItemBagIndex = nil;
     YAUIX_CurrentItemSlotIndex = nil;
 end
@@ -346,7 +346,7 @@ local function YAUIX_UpdateCoordinateFontString()
     YAUIX_CoordinateFontString:SetText(text);
 end
 
-function YAUIX_OnLoad(self)
+function YAUIX_Initialize(self)
     self:RegisterEvent("UNIT_HEALTH_FREQUENT");
     self:RegisterEvent("UNIT_POWER_FREQUENT");
     self:RegisterEvent("CHAT_MSG_COMBAT_XP_GAIN");
@@ -354,35 +354,20 @@ function YAUIX_OnLoad(self)
 
     self:SetScript("OnUpdate", YAUIX_UpdateCoordinateFontString);
 
-    hooksecurefunc(
-        "QuestWatch_Update",
-        YAUIX_UpdateQuestTracker
-    );
-    hooksecurefunc(
-        "ContainerFrameItemButton_OnEnter",
-        YAUIX_ContainerFrameItemButton_OnEnter
-    );
-    hooksecurefunc(
-        "ContainerFrameItemButton_OnLeave",
-        YAUIX_ContainerFrameItemButton_OnLeave
-    );
-    hooksecurefunc(
-        "TargetFrame_Update",
-        YAUIX_UpdateTargetFrame
-    );
-    hooksecurefunc(
-        "QuestLog_UpdateQuestDetails",
-        YAUIX_UpdateQuestLog
-    );
+    hooksecurefunc("QuestWatch_Update", YAUIX_UpdateQuestTracker);
+    hooksecurefunc("ContainerFrameItemButton_OnEnter", YAUIX_SetCurrentItem);
+    hooksecurefunc("ContainerFrameItemButton_OnLeave", YAUIX_ClearCurrentItem);
+    hooksecurefunc("TargetFrame_Update", YAUIX_UpdateTargetFrame);
+    hooksecurefunc("QuestLog_UpdateQuestDetails", YAUIX_UpdateQuestLog);
 
-    GameTooltip:HookScript("OnTooltipSetUnit", YAUIX_OnTooltipSetUnit);
-    GameTooltip:HookScript("OnTooltipSetItem", YAUIX_OnTooltipSetItem);
+    GameTooltip:HookScript("OnTooltipSetUnit", YAUIX_UpdateUnitTooltip);
+    GameTooltip:HookScript("OnTooltipSetItem", YAUIX_UpdateItemTooltip);
 
     YAUIX_FormatHealthBar("player", PlayerFrameHealthBar);
     YAUIX_FormatResourceBar("player", PlayerFrameManaBar);
 end
 
-function YAUIX_OnEvent(self, event, ...)
+function YAUIX_HandleIncomingEvent(self, event, ...)
     local arg1, arg2, arg3, arg4, arg5, arg6 = ...;
     if event == "UNIT_HEALTH_FREQUENT" then
         YAUIX_FormatHealthBar("target", TargetFrameHealthBar);
@@ -394,6 +379,6 @@ function YAUIX_OnEvent(self, event, ...)
         YAUIX_FormatHealthBar("player", PlayerFrameHealthBar);
         YAUIX_FormatResourceBar("player", PlayerFrameManaBar);
     elseif event == "CHAT_MSG_COMBAT_XP_GAIN" then
-        YAUIX_OnChatMsgCombatXPGain(arg1);
+        YAUIX_DisplayRequiredKillCountToLevelUp(arg1);
     end
 end
