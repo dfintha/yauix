@@ -1,6 +1,27 @@
+-- Globals
+
 local YAUIX_CurrentItemBagIndex = nil;
 local YAUIX_CurrentItemSlotIndex = nil;
 local YAUIX_InMerchantFrame = false;
+
+-- Utility Functions
+
+local function YAUIX_AbbreviateNumber(number)
+    if number > 1000000 then
+        return string.format("%.01fM", number / 1000000);
+    elseif number > 1000 then
+        return string.format("%.01fK", number / 1000);
+    end
+    return string.format("%d", number);
+end
+
+local function YAUIX_HideFontString(element)
+    if element then
+        element:SetFont("Fonts\\FRIZQT__.TTF", 0.1, "");
+    end
+end
+
+-- Callbacks
 
 local function YAUIX_DisplayRequiredKillCountToLevelUp(text)
     if UnitLevel("player") == 60 then
@@ -188,21 +209,6 @@ local function YAUIX_ClearCurrentItem(self)
     YAUIX_CurrentItemSlotIndex = nil;
 end
 
-local function YAUIX_AbbreviateNumber(number)
-    if number > 1000000 then
-        return string.format("%.01fM", number / 1000000);
-    elseif number > 1000 then
-        return string.format("%.01fK", number / 1000);
-    end
-    return string.format("%d", number);
-end
-
-local function YAUIX_HideFontString(element)
-    if element then
-        element:SetFont("Fonts\\FRIZQT__.TTF", 0.1, "");
-    end
-end
-
 local function YAUIX_FormatHealthOrResourceBar(overlay, parent, text, size)
     YAUIX_HideFontString(parent.LeftText);
     YAUIX_HideFontString(parent.RightText);
@@ -361,6 +367,8 @@ local function YAUIX_UpdateCoordinateFontString()
     local text = string.format("%.01f, %.01f", x * 100, y * 100);
     YAUIX_CoordinateFontString:SetText(text);
 end
+
+-- Entry Point and Event Dispatch
 
 function YAUIX_Initialize(self)
     self:RegisterEvent("UNIT_HEALTH_FREQUENT");
