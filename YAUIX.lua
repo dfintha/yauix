@@ -197,16 +197,16 @@ local function YAUIX_AbbreviateNumber(number)
     return string.format("%d", number);
 end
 
+local function YAUIX_HideFontString(element)
+    if element then
+        element:SetFont("Fonts\\FRIZQT__.TTF", 0.1, "");
+    end
+end
+
 local function YAUIX_FormatHealthOrResourceBar(overlay, parent, text)
-    if parent.LeftText then
-        parent.LeftText:SetFont("Fonts\\FRIZQT__.TTF", 0.1, "");
-    end
-    if parent.RightText then
-        parent.RightText:SetFont("Fonts\\FRIZQT__.TTF", 0.1, "");
-    end
-    if parent.TextString then
-        parent.TextString:SetFont("Fonts\\FRIZQT__.TTF", 0.1, "");
-    end
+    YAUIX_HideFontString(parent.LeftText);
+    YAUIX_HideFontString(parent.RightText);
+    YAUIX_HideFontString(parent.TextString);
 
     overlay:SetParent(parent);
     overlay:SetFont("Fonts\\FRIZQT__.TTF", 9.5, "OUTLINE");
