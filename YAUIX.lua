@@ -330,11 +330,32 @@ local function YAUIX_UpdateQuestLog()
     text:SetJustifyV("TOP");
 end
 
+local function YAUIX_UpdateCoordinateFontString()
+    if not YAUIX_CoordinateFontString then
+        YAUIX_CoordinateFontString = UIParent:CreateFontString(
+            nil,
+            "OVERLAY",
+            "GameFontHighlight"
+        );
+        YAUIX_CoordinateFontString:SetPoint("BOTTOMRIGHT", -10, 12);
+        YAUIX_CoordinateFontString:SetFont("Fonts\\FRIZQT__.TTF", 12.5, "OUTLINE");
+        YAUIX_CoordinateFontString:SetTextColor(1, 1, 1, 1);
+    end
+
+    local map = C_Map.GetBestMapForUnit("player");
+    local position = C_Map.GetPlayerMapPosition(map, "player");
+    local x, y = position:GetXY();
+    local text = string.format("%.01f, %.01f", x * 100, y * 100);
+    YAUIX_CoordinateFontString:SetText(text);
+end
+
 function YAUIX_OnLoad(self)
     self:RegisterEvent("UNIT_HEALTH_FREQUENT");
     self:RegisterEvent("UNIT_POWER_FREQUENT");
     self:RegisterEvent("CHAT_MSG_COMBAT_XP_GAIN");
     self:RegisterEvent("PLAYER_ENTERING_WORLD");
+
+    self:SetScript("OnUpdate", YAUIX_UpdateCoordinateFontString);
 
     hooksecurefunc(
         "QuestWatch_Update",
