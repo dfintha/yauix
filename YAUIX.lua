@@ -209,7 +209,7 @@ local function YAUIX_ClearCurrentItem(self)
     YAUIX_CurrentItemSlotIndex = nil;
 end
 
-local function YAUIX_FormatHealthOrResourceBar(overlay, parent, text, size)
+local function YAUIX_FormatBarOverlay(overlay, parent, text, size)
     YAUIX_HideFontString(parent.LeftText);
     YAUIX_HideFontString(parent.RightText);
     YAUIX_HideFontString(parent.TextString);
@@ -257,7 +257,7 @@ local function YAUIX_FormatHealthBar(unit, parent)
                YAUIX_AbbreviateNumber(total) .. " (" .. percent .. "%)";
     end
 
-    YAUIX_FormatHealthOrResourceBar(parent.HealthOverlay, parent, text, 9.5);
+    YAUIX_FormatBarOverlay(parent.HealthOverlay, parent, text, 9.5);
 end
 
 local function YAUIX_FormatResourceBar(unit, parent)
@@ -285,7 +285,7 @@ local function YAUIX_FormatResourceBar(unit, parent)
         text = text .. " (" .. percent .. "%)";
     end
 
-    YAUIX_FormatHealthOrResourceBar(parent.ResourceOverlay, parent, text, 9.5);
+    YAUIX_FormatBarOverlay(parent.ResourceOverlay, parent, text, 9.5);
 end
 
 local function YAUIX_UpdateTargetFrame(self)
