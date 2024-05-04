@@ -15,6 +15,8 @@ own interface extension add-on with only the functionality that I actually need.
 - Show the creature family of creatures where applicable.
 - Show the IDs of units and items where applicable.
 - Show the experience reward of quests in the Quest Log.
+- Show the player's current coordinates in the bottom right corner of the
+  screen.
 
 ## License
 
