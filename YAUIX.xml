@@ -1,6 +1,6 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <Script file="YAUIX.lua"/>
-    <Frame name="YAUIXFrame" inherits="BackdropTemplate">
+    <Frame name="YAUIXFrame">
         <Scripts>
             <OnLoad function="YAUIX_Initialize" />
             <OnEvent function="YAUIX_HandleIncomingEvent" />
