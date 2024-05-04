@@ -1,5 +1,6 @@
 local YAUIX_CurrentItemBagIndex = nil;
 local YAUIX_CurrentItemSlotIndex = nil;
+local YAUIX_InMerchantFrame = false;
 
 local function YAUIX_DisplayRequiredKillCountToLevelUp(text)
     if not string.find(text, "dies, you gain") then
@@ -59,6 +60,10 @@ local function YAUIX_UpdateUnitTooltip(tooltip)
 end
 
 local function YAUIX_UpdateItemTooltip(tooltip)
+    if YAUIX_InMerchantFrame then
+        return;
+    end
+
     local link = select(2, tooltip:GetItem());
     local _, _, _, level, _, _, _, _, slot, _, price = GetItemInfo(link);
 
@@ -355,6 +360,8 @@ function YAUIX_Initialize(self)
     self:RegisterEvent("UNIT_POWER_FREQUENT");
     self:RegisterEvent("CHAT_MSG_COMBAT_XP_GAIN");
     self:RegisterEvent("PLAYER_ENTERING_WORLD");
+    self:RegisterEvent("MERCHANT_SHOW");
+    self:RegisterEvent("MERCHANT_CLOSED");
 
     self:SetScript("OnUpdate", YAUIX_UpdateCoordinateFontString);
 
@@ -384,5 +391,9 @@ function YAUIX_HandleIncomingEvent(self, event, ...)
         YAUIX_FormatResourceBar("player", PlayerFrameManaBar);
     elseif event == "CHAT_MSG_COMBAT_XP_GAIN" then
         YAUIX_DisplayRequiredKillCountToLevelUp(arg1);
+    elseif event == "MERCHANT_SHOW" then
+        YAUIX_InMerchantFrame = true;
+    elseif event  == "MERCHANT_CLOSED" then
+        YAUIX_InMerchantFrame = false;
     end
 end
