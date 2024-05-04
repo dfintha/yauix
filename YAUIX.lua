@@ -340,6 +340,10 @@ local function YAUIX_UpdateCoordinateFontString()
     end
 
     local map = C_Map.GetBestMapForUnit("player");
+    if not map then
+        return;
+    end
+
     local position = C_Map.GetPlayerMapPosition(map, "player");
     local x, y = position:GetXY();
     local text = string.format("%.01f, %.01f", x * 100, y * 100);
