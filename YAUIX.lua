@@ -99,11 +99,6 @@ local function YAUIX_UpdateItemTooltip(tooltip)
 
     GameTooltip:AddLine(" ", 1, 1, 1);
 
-    -- Item Level
-    if slot ~= "INVTYPE_NON_EQUIP_IGNORE" and not unequippable then
-        GameTooltip:AddLine("Item Level: " .. level, 1, 1, 1);
-    end
-
     -- Sell Price
     if not unsellable then
         local text = "Sell Price: ";
@@ -114,6 +109,11 @@ local function YAUIX_UpdateItemTooltip(tooltip)
                    " for this stack of " .. count .. ")";
         end
         GameTooltip:AddLine(text, 1, 1, 1);
+    end
+
+    -- Item Level
+    if slot ~= "INVTYPE_NON_EQUIP_IGNORE" and not unequippable then
+        GameTooltip:AddLine("Item Level: " .. level, 1, 1, 1);
     end
 
     GameTooltip:Show();
