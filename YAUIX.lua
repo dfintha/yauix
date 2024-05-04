@@ -21,6 +21,21 @@ local function YAUIX_HideFontString(element)
     end
 end
 
+local function YAUIX_FormatBarOverlay(overlay, parent, size)
+    YAUIX_HideFontString(parent.LeftText);
+    YAUIX_HideFontString(parent.RightText);
+    YAUIX_HideFontString(parent.TextString);
+
+    overlay:SetParent(parent);
+    overlay:SetFont("Fonts\\FRIZQT__.TTF", size, "OUTLINE");
+    overlay:SetTextColor(1, 1, 1, 1);
+    overlay:SetPoint("TOPLEFT", parent, "TOPLEFT", 0, 0);
+    overlay:SetWidth(parent:GetWidth());
+    overlay:SetHeight(parent:GetHeight());
+    overlay:SetJustifyH("CENTER");
+    overlay:SetJustifyV("CENTER");
+end
+
 -- Callbacks
 
 local function YAUIX_DisplayRequiredKillCountToLevelUp(text)
@@ -209,22 +224,6 @@ local function YAUIX_ClearCurrentItem(self)
     YAUIX_CurrentItemSlotIndex = nil;
 end
 
-local function YAUIX_FormatBarOverlay(overlay, parent, text, size)
-    YAUIX_HideFontString(parent.LeftText);
-    YAUIX_HideFontString(parent.RightText);
-    YAUIX_HideFontString(parent.TextString);
-
-    overlay:SetParent(parent);
-    overlay:SetFont("Fonts\\FRIZQT__.TTF", size, "OUTLINE");
-    overlay:SetText(text);
-    overlay:SetTextColor(1, 1, 1, 1);
-    overlay:SetPoint("TOPLEFT", parent, "TOPLEFT", 0, 0);
-    overlay:SetWidth(parent:GetWidth());
-    overlay:SetHeight(parent:GetHeight());
-    overlay:SetJustifyH("CENTER");
-    overlay:SetJustifyV("CENTER");
-end
-
 local function YAUIX_FormatHealthBar(unit, parent)
     if not UnitGUID(unit) then
         return;
@@ -236,6 +235,7 @@ local function YAUIX_FormatHealthBar(unit, parent)
                 "HealthOverlayFontString",
                 "OVERLAY"
             );
+        YAUIX_FormatBarOverlay(parent.HealthOverlay, parent, 9.5);
     end
 
     local current = UnitHealth(unit);
@@ -257,7 +257,7 @@ local function YAUIX_FormatHealthBar(unit, parent)
                YAUIX_AbbreviateNumber(total) .. " (" .. percent .. "%)";
     end
 
-    YAUIX_FormatBarOverlay(parent.HealthOverlay, parent, text, 9.5);
+    parent.HealthOverlay:SetText(text);
 end
 
 local function YAUIX_FormatResourceBar(unit, parent)
@@ -271,6 +271,7 @@ local function YAUIX_FormatResourceBar(unit, parent)
                 "ResourceOverlayFontString",
                 "OVERLAY"
             );
+        YAUIX_FormatBarOverlay(parent.ResourceOverlay, parent, 9.5);
     end
 
     local type = select(2, UnitPowerType(unit));
@@ -285,7 +286,7 @@ local function YAUIX_FormatResourceBar(unit, parent)
         text = text .. " (" .. percent .. "%)";
     end
 
-    YAUIX_FormatBarOverlay(parent.ResourceOverlay, parent, text, 9.5);
+    parent.ResourceOverlay:SetText(text);
 end
 
 local function YAUIX_UpdateTargetFrame(self)
