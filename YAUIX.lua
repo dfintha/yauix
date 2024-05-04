@@ -364,6 +364,7 @@ local function YAUIX_UpdateCoordinateFontString()
 
     local map = C_Map.GetBestMapForUnit("player");
     if not map then
+        YAUIX_CoordinateFontString:Hide();
         return;
     end
 
@@ -371,6 +372,7 @@ local function YAUIX_UpdateCoordinateFontString()
     local x, y = position:GetXY();
     local text = string.format("%.01f, %.01f", x * 100, y * 100);
     YAUIX_CoordinateFontString:SetText(text);
+    YAUIX_CoordinateFontString:Show();
 end
 
 -- Entry Point and Event Dispatch
