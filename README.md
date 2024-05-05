@@ -17,6 +17,8 @@ own interface extension add-on with only the functionality that I actually need.
 - Show the experience reward of quests in the Quest Log.
 - Show the player's current coordinates in the bottom right corner of the
   screen.
+- Enhance the experience and reputations bars with more sensible, always present
+  information strings.
 
 ## License
 
