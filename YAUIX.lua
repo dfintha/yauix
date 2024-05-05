@@ -375,6 +375,106 @@ local function YAUIX_UpdateCoordinateFontString()
     YAUIX_CoordinateFontString:Show();
 end
 
+local function YAUIX_ReplaceXPBarText()
+    if UnitLevel("player") == 60 then
+        return;
+    end
+
+    local bar = MainMenuExpBar;
+    if not bar.DetailsFontString then
+        bar.DetailsFontString = bar:CreateFontString(
+            "DetailsFontString",
+            "OVERLAY"
+        );
+        YAUIX_FormatBarOverlay(
+            bar.DetailsFontString,
+            MainMenuBarOverlayFrame,
+            MainMenuExpBar,
+            10.5
+        );
+
+        -- HACK: Font should be set in YAUIX_FormatBarOverlay().
+        bar.DetailsFontString:SetFont("Fonts\\ARIALN.ttf", 12.5, "OUTLINE");
+
+        YAUIX_HideFontString(MainMenuBarExpText);
+    end
+
+    local current = UnitXP("player");
+    local required = UnitXPMax("player");
+    local percent = string.format("%.1f", (current / required) * 100);
+
+    local rested = select(2, GetRestState());
+    if not rested then
+        rested = "Normal";
+    end
+
+    local text = rested .. ": " .. YAUIX_AbbreviateNumber(current) .. " / " ..
+                 YAUIX_AbbreviateNumber(required) .. " (" .. percent .. "%)";
+    bar.DetailsFontString:SetText(text);
+end
+
+local function YAUIX_ReplaceReputationBarText()
+    local bar = ReputationWatchBar;
+    if not bar.DetailsFontString then
+        bar.DetailsFontString = bar:CreateFontString(
+            "DetailsFontString",
+            "OVERLAY"
+        );
+        YAUIX_FormatBarOverlay(
+            bar.DetailsFontString,
+            bar.OverlayFrame,
+            bar.OverlayFrame,
+            10
+        );
+
+        -- HACK: Font and anchoring should be set in YAUIX_FormatBarOverlay().
+        bar.DetailsFontString:SetFont("Fonts\\ARIALN.ttf", 12, "OUTLINE");
+        bar.DetailsFontString:SetPoint(
+            "TOPLEFT",
+            bar.OverlayFrame,
+            "TOPLEFT",
+            0,
+            2
+        );
+
+        YAUIX_HideFontString(bar.OverlayFrame.Text);
+    end
+
+    local name, standing, min, max, value = GetWatchedFactionInfo();
+
+    if not name then
+        return;
+    end;
+
+    local current = value - min;
+    local needed = max - min;
+    local percent = string.format("%.01f", (current / needed) * 100);
+
+    if standing == 1 then
+        standing = "Hated";
+    elseif standing == 2 then
+        standing = "Hostile";
+    elseif standing == 3 then
+        standing = "Unfriendly";
+    elseif standing == 4 then
+        standing = "Neutral";
+    elseif standing == 5 then
+        standing = "Friendly";
+    elseif standing == 6 then
+        standing = "Honored";
+    elseif standing == 7 then
+        standing = "Revered";
+    elseif standing == 8 then
+        standing = "Exalted";
+    else
+        standing = "Unknown";
+    end
+
+    local text = standing .. " with " .. name .. ": " .. current .. " / " ..
+                 needed .. " (" .. percent .. "%)";
+    bar.DetailsFontString:SetText(text);
+end
+
 -- Entry Point and Event Dispatch
 
 function YAUIX_Initialize(self)
@@ -392,6 +492,8 @@ function YAUIX_Initialize(self)
     hooksecurefunc("ContainerFrameItemButton_OnLeave", YAUIX_ClearCurrentItem);
     hooksecurefunc("TargetFrame_Update", YAUIX_UpdateTargetFrame);
     hooksecurefunc("QuestLog_UpdateQuestDetails", YAUIX_UpdateQuestLog);
+    hooksecurefunc("ExpBar_Update", YAUIX_ReplaceXPBarText);
+    hooksecurefunc("ExpBar_Update", YAUIX_ReplaceReputationBarText);
 
     GameTooltip:HookScript("OnTooltipSetUnit", YAUIX_UpdateUnitTooltip);
     GameTooltip:HookScript("OnTooltipSetItem", YAUIX_UpdateItemTooltip);
