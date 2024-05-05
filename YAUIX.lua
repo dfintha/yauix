@@ -21,13 +21,13 @@ local function YAUIX_HideFontString(element)
     end
 end
 
-local function YAUIX_FormatBarOverlay(overlay, parent, anchor, size)
+local function YAUIX_FormatBarOverlay(overlay, parent, anchor, font, size)
     YAUIX_HideFontString(parent.LeftText);
     YAUIX_HideFontString(parent.RightText);
     YAUIX_HideFontString(parent.TextString);
 
     overlay:SetParent(parent);
-    overlay:SetFont("Fonts\\FRIZQT__.TTF", size, "OUTLINE");
+    overlay:SetFont(font, size, "OUTLINE");
     overlay:SetTextColor(1, 1, 1, 1);
     overlay:SetPoint("TOPLEFT", anchor, "TOPLEFT", 0, 0);
     overlay:SetWidth(anchor:GetWidth());
@@ -235,7 +235,13 @@ local function YAUIX_FormatHealthBar(unit, parent)
                 "HealthOverlayFontString",
                 "OVERLAY"
             );
-        YAUIX_FormatBarOverlay(parent.HealthOverlay, parent, parent, 9.5);
+        YAUIX_FormatBarOverlay(
+            parent.HealthOverlay,
+            parent,
+            parent,
+            "Fonts\\FRIZQT__.TTF",
+            9.5
+        );
     end
 
     local current = UnitHealth(unit);
@@ -271,7 +277,13 @@ local function YAUIX_FormatResourceBar(unit, parent)
                 "ResourceOverlayFontString",
                 "OVERLAY"
             );
-        YAUIX_FormatBarOverlay(parent.ResourceOverlay, parent, parent, 9.5);
+        YAUIX_FormatBarOverlay(
+            parent.ResourceOverlay,
+            parent,
+            parent,
+            "Fonts\\FRIZQT__.TTF",
+            9.5
+        );
     end
 
     local type = select(2, UnitPowerType(unit));
@@ -382,20 +394,14 @@ local function YAUIX_ReplaceXPBarText()
 
     local bar = MainMenuExpBar;
     if not bar.DetailsFontString then
-        bar.DetailsFontString = bar:CreateFontString(
-            "DetailsFontString",
-            "OVERLAY"
-        );
+        bar.DetailsFontString = bar:CreateFontString("DetailsFontString");
         YAUIX_FormatBarOverlay(
             bar.DetailsFontString,
             MainMenuBarOverlayFrame,
             MainMenuExpBar,
-            10.5
+            "Fonts\\ARIALN.ttf",
+            12.5
         );
-
-        -- HACK: Font should be set in YAUIX_FormatBarOverlay().
-        bar.DetailsFontString:SetFont("Fonts\\ARIALN.ttf", 12.5, "OUTLINE");
-
         YAUIX_HideFontString(MainMenuBarExpText);
     end
 
@@ -416,19 +422,15 @@ end
 local function YAUIX_ReplaceReputationBarText()
     local bar = ReputationWatchBar;
     if not bar.DetailsFontString then
-        bar.DetailsFontString = bar:CreateFontString(
-            "DetailsFontString",
-            "OVERLAY"
-        );
+        bar.DetailsFontString = bar:CreateFontString("DetailsFontString");
         YAUIX_FormatBarOverlay(
             bar.DetailsFontString,
             bar.OverlayFrame,
             bar.OverlayFrame,
-            10
+            "Fonts\\ARIALN.ttf",
+            12
         );
 
-        -- HACK: Font and anchoring should be set in YAUIX_FormatBarOverlay().
-        bar.DetailsFontString:SetFont("Fonts\\ARIALN.ttf", 12, "OUTLINE");
         bar.DetailsFontString:SetPoint(
             "TOPLEFT",
             bar.OverlayFrame,
