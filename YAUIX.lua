@@ -477,6 +477,27 @@ local function YAUIX_ReplaceReputationBarText()
     bar.DetailsFontString:SetText(text);
 end
 
+local function YAUIX_ShowOrHideBarOverlays()
+    local visible = WorldMapFrame:IsVisible();
+    local maximized = WorldMapFrame:IsMaximized();
+
+    if visible and maximized then
+        if ReputationWatchBar and ReputationWatchBar.DetailsFontString then
+            ReputationWatchBar.DetailsFontString:Hide();
+        end
+        if MainMenuExpBar and MainMenuExpBar.DetailsFontString then
+            MainMenuExpBar.DetailsFontString:Hide();
+        end
+    else
+        if ReputationWatchBar and ReputationWatchBar.DetailsFontString then
+            ReputationWatchBar.DetailsFontString:Show();
+        end
+        if MainMenuExpBar and MainMenuExpBar.DetailsFontString then
+            MainMenuExpBar.DetailsFontString:Show();
+        end
+    end
+end
+
 -- Entry Point and Event Dispatch
 
 function YAUIX_Initialize(self)
@@ -496,6 +517,12 @@ function YAUIX_Initialize(self)
     hooksecurefunc("QuestLog_UpdateQuestDetails", YAUIX_UpdateQuestLog);
     hooksecurefunc("ExpBar_Update", YAUIX_ReplaceXPBarText);
     hooksecurefunc("ExpBar_Update", YAUIX_ReplaceReputationBarText);
+    hooksecurefunc("ToggleWorldMap", YAUIX_ShowOrHideBarOverlays);
+    hooksecurefunc("OpenWorldMap", YAUIX_ShowOrHideBarOverlays);
+    hooksecurefunc(WorldMapFrame, "Maximize", YAUIX_ShowOrHideBarOverlays);
+    hooksecurefunc(WorldMapFrame, "Minimize", YAUIX_ShowOrHideBarOverlays);
+
+    WorldMapFrame:HookScript("OnHide", YAUIX_ShowOrHideBarOverlays);
 
     GameTooltip:HookScript("OnTooltipSetUnit", YAUIX_UpdateUnitTooltip);
     GameTooltip:HookScript("OnTooltipSetItem", YAUIX_UpdateItemTooltip);
