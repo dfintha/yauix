@@ -519,7 +519,7 @@ function YAUIX_HandleIncomingEvent(self, event, ...)
         YAUIX_DisplayRequiredKillCountToLevelUp(arg1);
     elseif event == "MERCHANT_SHOW" then
         YAUIX_InMerchantFrame = true;
-    elseif event  == "MERCHANT_CLOSED" then
+    elseif event == "MERCHANT_CLOSED" then
         YAUIX_InMerchantFrame = false;
     end
 end
