@@ -319,36 +319,34 @@ local function YAUIX_UpdateQuestLog()
         );
     end
 
-    local anchor = nil;
-    if QuestLogItem8IconTexture:IsVisible() then
-        anchor = QuestLogItem8IconTexture;
-    elseif QuestLogItem7IconTexture:IsVisible() then
-        anchor = QuestLogItem7IconTexture;
-    elseif QuestLogItem6IconTexture:IsVisible() then
-        anchor = QuestLogItem6IconTexture;
-    elseif QuestLogItem5IconTexture:IsVisible() then
-        anchor = QuestLogItem5IconTexture;
-    elseif QuestLogItem4IconTexture:IsVisible() then
-        anchor = QuestLogItem4IconTexture;
-    elseif QuestLogItem3IconTexture:IsVisible() then
-        anchor = QuestLogItem3IconTexture;
-    elseif QuestLogItem2IconTexture:IsVisible() then
-        anchor = QuestLogItem2IconTexture;
-    elseif QuestLogItem1IconTexture:IsVisible() then
-        anchor = QuestLogItem1IconTexture;
-    elseif QuestLogItemReceiveText:IsVisible() then
+    local id = GetQuestLogSelection();
+    local choice = GetNumQuestLogChoices(id);
+    local fixed = GetNumQuestLogRewards();
+    local money = GetQuestLogRewardMoney();
+
+    local anchor = QuestLogQuestDescription;
+    if fixed > 0 then
+        local index = fixed;
+        if (index % 2 == 0) then
+            index = index - 1;
+        end
+        anchor = _G["QuestLogItem" .. (index) .. "IconTexture"];
+    elseif choice == 0 and money > 0 then
         anchor = QuestLogItemReceiveText;
-    elseif QuestLogRewardTitleText:IsVisible() then
-        anchor = QuestLogRewardTitleText;
-    else
-        anchor = QuestLogQuestDescription;
+    elseif choice > 0 and money == 0 then
+        local index = fixed + choice;
+        if (choice % 2 == 0) then
+            index = index - 1;
+        end
+        anchor = _G["QuestLogItem" .. index .. "IconTexture"];
+    elseif money > 0 then
+        anchor = QuestLogItemReceiveText;
     end
 
     if not anchor then
         return;
     end
 
-    local id = GetQuestLogSelection();
     local experience = GetQuestLogRewardXP();
     local text = parent.ExperienceRewardFontString;
     text:SetParent(parent);
