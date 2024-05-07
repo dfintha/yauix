@@ -153,7 +153,7 @@ local function YAUIX_UpdateItemTooltip(tooltip)
     end
 
     -- Item Level
-    if slot ~= "INVTYPE_NON_EQUIP_IGNORE" and not unequippable then
+    if not unequippable then
         GameTooltip:AddLine("Item Level: " .. level, 1, 1, 1);
     end
 
