@@ -104,18 +104,19 @@ local function YAUIX_UpdateItemTooltip(tooltip)
     end
 
     local link = select(2, tooltip:GetItem());
-    local _, _, _, level, _, _, _, _, slot, _, price = GetItemInfo(link);
+    local _, _, _, level, _, type, _, _, slot, _, price = GetItemInfo(link);
 
     local id = string.sub(link, 18, string.len(link));
     id = string.sub(id, 1, string.find(id, ":") - 1);
     for i = 1, select("#", tooltip:GetRegions()) do
         local region = select(i, tooltip:GetRegions());
         if region and region:GetObjectType() == "FontString" then
+            local tag = "[" .. id .. "]";
             local text = region:GetText();
-            if text then
-                region:SetText(text .. " [" .. id .. "]");
-                break;
+            if text and not string.find(text, tag) then
+                region:SetText(text .. " " .. tag);
             end
+            break;
         end
     end
 
@@ -132,7 +133,8 @@ local function YAUIX_UpdateItemTooltip(tooltip)
 
     local unsellable = not price or price == 0 or count == 0;
     local unequippable = not level or slot == "INVTYPE_NON_EQUIP_IGNORE";
-    if unequippable and unsellable then
+    local recipe = type == "Recipe";
+    if (unequippable and unsellable) or recipe then
         return
     end
 
