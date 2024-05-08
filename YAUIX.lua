@@ -327,7 +327,14 @@ local function YAUIX_UpdateQuestLog()
     local money = GetQuestLogRewardMoney();
 
     local anchor = QuestLogQuestDescription;
-    if fixed > 0 then
+    if QuestLogSpellLearnText then
+        for i = 1, 9 do
+            local attempt = _G["QuestLogItem" .. i .. "IconTexture"];
+            if attempt and attempt:IsVisible() then
+                anchor = _G["QuestLogItem" .. i .. "IconTexture"];
+            end
+        end
+    elseif fixed > 0 then
         local index = fixed;
         if (index % 2 == 0) then
             index = index - 1;
