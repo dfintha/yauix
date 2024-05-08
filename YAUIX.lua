@@ -15,17 +15,13 @@ local function YAUIX_AbbreviateNumber(number)
     return string.format("%d", number);
 end
 
-local function YAUIX_HideFontString(element)
+local function YAUIX_MakeFontStringInvisible(element)
     if element then
         element:SetFont("Fonts\\FRIZQT__.TTF", 0.1, "");
     end
 end
 
-local function YAUIX_FormatBarOverlay(overlay, parent, anchor, font, size)
-    YAUIX_HideFontString(parent.LeftText);
-    YAUIX_HideFontString(parent.RightText);
-    YAUIX_HideFontString(parent.TextString);
-
+local function YAUIX_InitializeBarOverlay(overlay, parent, anchor, font, size)
     overlay:SetParent(parent);
     overlay:SetFont(font, size, "OUTLINE");
     overlay:SetTextColor(1, 1, 1, 1);
@@ -231,24 +227,24 @@ local function YAUIX_ClearCurrentItem(self)
     YAUIX_CurrentItemSlotIndex = nil;
 end
 
-local function YAUIX_FormatHealthBar(unit, parent)
-    if not UnitGUID(unit) then
-        return;
-    end
-
+local function YAUIX_FormatHealthBar(unit, parent, short, size)
     if not parent.HealthOverlay then
         parent.HealthOverlay =
             parent:CreateFontString(
                 "HealthOverlayFontString",
                 "OVERLAY"
             );
-        YAUIX_FormatBarOverlay(
+        YAUIX_InitializeBarOverlay(
             parent.HealthOverlay,
             parent,
             parent,
             "Fonts\\FRIZQT__.TTF",
-            9.5
+            size
         );
+    end
+
+    if not UnitGUID(unit) then
+        return;
     end
 
     local current = UnitHealth(unit);
@@ -266,39 +262,46 @@ local function YAUIX_FormatHealthBar(unit, parent)
     elseif player or pet then
         text = percent .. "%";
     else
-        text = YAUIX_AbbreviateNumber(current) .. "/" ..
-               YAUIX_AbbreviateNumber(total) .. " (" .. percent .. "%)";
+        text = YAUIX_AbbreviateNumber(current);
+        if not short then
+            text = text .. "/" .. YAUIX_AbbreviateNumber(total);
+        end
+        text = text .. " (" .. percent .. "%)";
     end
 
     parent.HealthOverlay:SetText(text);
 end
 
-local function YAUIX_FormatResourceBar(unit, parent)
-    if not UnitGUID(unit) then
-        return;
-    end
-
+local function YAUIX_FormatResourceBar(unit, parent, short, size)
     if not parent.ResourceOverlay then
         parent.ResourceOverlay =
             parent:CreateFontString(
                 "ResourceOverlayFontString",
                 "OVERLAY"
             );
-        YAUIX_FormatBarOverlay(
+        YAUIX_InitializeBarOverlay(
             parent.ResourceOverlay,
             parent,
             parent,
             "Fonts\\FRIZQT__.TTF",
-            9.5
+            size
         );
+    end
+
+    if not UnitGUID(unit) then
+        return;
     end
 
     local type = select(2, UnitPowerType(unit));
     local current = UnitPower(unit);
     local total = UnitPowerMax(unit);
     local percent = math.floor(current / total * 100);
-    local text = YAUIX_AbbreviateNumber(current) .. "/" ..
-                  YAUIX_AbbreviateNumber(total);
+
+    local text = YAUIX_AbbreviateNumber(current);
+    if not short then
+        text = text .. "/" .. YAUIX_AbbreviateNumber(total);
+    end
+
     if total == 0 then
         text = "";
     elseif (type == "MANA") then
@@ -309,8 +312,8 @@ local function YAUIX_FormatResourceBar(unit, parent)
 end
 
 local function YAUIX_UpdateTargetFrame(self)
-    YAUIX_FormatHealthBar("target", TargetFrameHealthBar);
-    YAUIX_FormatResourceBar("target", TargetFrameManaBar);
+    YAUIX_FormatHealthBar("target", TargetFrameHealthBar, false, 9.5);
+    YAUIX_FormatResourceBar("target", TargetFrameManaBar, false, 9.5);
 end
 
 local function YAUIX_UpdateQuestLog()
@@ -407,14 +410,13 @@ local function YAUIX_ReplaceXPBarText()
     local bar = MainMenuExpBar;
     if not bar.DetailsFontString then
         bar.DetailsFontString = bar:CreateFontString("DetailsFontString");
-        YAUIX_FormatBarOverlay(
+        YAUIX_InitializeBarOverlay(
             bar.DetailsFontString,
             MainMenuBarOverlayFrame,
             MainMenuExpBar,
             "Fonts\\ARIALN.ttf",
             12.5
         );
-        YAUIX_HideFontString(MainMenuBarExpText);
     end
 
     local current = UnitXP("player");
@@ -435,7 +437,7 @@ local function YAUIX_ReplaceReputationBarText()
     local bar = ReputationWatchBar;
     if not bar.DetailsFontString then
         bar.DetailsFontString = bar:CreateFontString("DetailsFontString");
-        YAUIX_FormatBarOverlay(
+        YAUIX_InitializeBarOverlay(
             bar.DetailsFontString,
             bar.OverlayFrame,
             bar.OverlayFrame,
@@ -450,8 +452,6 @@ local function YAUIX_ReplaceReputationBarText()
             0,
             2
         );
-
-        YAUIX_HideFontString(bar.OverlayFrame.Text);
     end
 
     local name, standing, min, max, value = GetWatchedFactionInfo();
@@ -512,6 +512,33 @@ end
 
 -- Entry Point and Event Dispatch
 
+local function YAUIX_InitializeUIElements()
+    YAUIX_MakeFontStringInvisible(PlayerFrameHealthBar.LeftText);
+    YAUIX_MakeFontStringInvisible(PlayerFrameHealthBar.RightText);
+    YAUIX_MakeFontStringInvisible(PlayerFrameHealthBarText);
+    YAUIX_FormatHealthBar("player", PlayerFrameHealthBar, false, 9.5);
+
+    YAUIX_MakeFontStringInvisible(PlayerFrameManaBar.LeftText);
+    YAUIX_MakeFontStringInvisible(PlayerFrameManaBar.RightText);
+    YAUIX_MakeFontStringInvisible(PlayerFrameManaBarText);
+    YAUIX_FormatResourceBar("player", PlayerFrameManaBar, false, 9.5);
+
+    YAUIX_MakeFontStringInvisible(PetFrameHealthBarTextLeft);
+    YAUIX_MakeFontStringInvisible(PetFrameHealthBarTextRight);
+    YAUIX_MakeFontStringInvisible(PetFrameHealthBarText);
+    YAUIX_FormatHealthBar("playerpet", PetFrameHealthBar, true, 8);
+    PetFrameHealthBar.HealthOverlay:SetParent(PetFrameHealthBarText:GetParent());
+
+    YAUIX_MakeFontStringInvisible(PetFrameManaBarTextLeft);
+    YAUIX_MakeFontStringInvisible(PetFrameManaBarTextRight);
+    YAUIX_MakeFontStringInvisible(PetFrameManaBarText);
+    YAUIX_FormatResourceBar("playerpet", PetFrameManaBar, true, 8);
+    PetFrameManaBar.ResourceOverlay:SetParent(PetFrameManaBarText:GetParent());
+
+    YAUIX_MakeFontStringInvisible(MainMenuBarExpText);
+    YAUIX_MakeFontStringInvisible(ReputationWatchBar.OverlayFrame.Text);
+end
+
 function YAUIX_Initialize(self)
     self:RegisterEvent("UNIT_HEALTH_FREQUENT");
     self:RegisterEvent("UNIT_POWER_FREQUENT");
@@ -539,21 +566,24 @@ function YAUIX_Initialize(self)
     GameTooltip:HookScript("OnTooltipSetUnit", YAUIX_UpdateUnitTooltip);
     GameTooltip:HookScript("OnTooltipSetItem", YAUIX_UpdateItemTooltip);
 
-    YAUIX_FormatHealthBar("player", PlayerFrameHealthBar);
-    YAUIX_FormatResourceBar("player", PlayerFrameManaBar);
+    YAUIX_InitializeUIElements();
 end
 
 function YAUIX_HandleIncomingEvent(self, event, ...)
     local arg1, arg2, arg3, arg4, arg5, arg6 = ...;
     if event == "UNIT_HEALTH_FREQUENT" then
-        YAUIX_FormatHealthBar("target", TargetFrameHealthBar);
-        YAUIX_FormatHealthBar("player", PlayerFrameHealthBar);
+        YAUIX_FormatHealthBar("target", TargetFrameHealthBar, false, 9.5);
+        YAUIX_FormatHealthBar("player", PlayerFrameHealthBar, false, 9.5);
+        YAUIX_FormatHealthBar("playerpet", PetFrameHealthBar, true, 8);
     elseif event == "UNIT_POWER_FREQUENT" then
-        YAUIX_FormatResourceBar("target", TargetFrameManaBar);
-        YAUIX_FormatResourceBar("player", PlayerFrameManaBar);
+        YAUIX_FormatResourceBar("target", TargetFrameManaBar, false, 9.5);
+        YAUIX_FormatResourceBar("player", PlayerFrameManaBar, false, 9.5);
+        YAUIX_FormatResourceBar("playerpet", PetFrameManaBar, true, 8);
     elseif event == "PLAYER_ENTERING_WORLD" then
-        YAUIX_FormatHealthBar("player", PlayerFrameHealthBar);
-        YAUIX_FormatResourceBar("player", PlayerFrameManaBar);
+        YAUIX_FormatHealthBar("player", PlayerFrameHealthBar, false, 9.5);
+        YAUIX_FormatResourceBar("player", PlayerFrameManaBar, false, 9.5);
+        YAUIX_FormatHealthBar("playerpet", PetFrameHealthBar, true, 8);
+        YAUIX_FormatResourceBar("playerpet", PetFrameManaBar, true, 8);
     elseif event == "CHAT_MSG_COMBAT_XP_GAIN" then
         YAUIX_DisplayRequiredKillCountToLevelUp(arg1);
     elseif event == "MERCHANT_SHOW" then
