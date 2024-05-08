@@ -369,7 +369,7 @@ local function YAUIX_UpdateQuestLog()
     text:SetParent(parent);
     text:SetFont(QuestLogQuestDescription:GetFont());
     text:SetText("You will receive " .. experience .. " experience.");
-    text:SetTextColor(0, 0, 0.75, 1);
+    text:SetTextColor(0.40, 0.0, 0.35, 1);
     text:SetPoint("TOPLEFT", anchor, "BOTTOMLEFT", 0, -10);
     text:SetWidth(QuestLogQuestDescription:GetWidth());
     text:SetHeight(30);
