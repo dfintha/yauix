@@ -142,8 +142,8 @@ local function YAUIX_UpdateItemTooltip(tooltip)
         text = text .. GetCoinTextureString(price);
         if count > 1 then
             price = price * count;
-            text = text .. " (" .. GetCoinTextureString(price) ..
-                   " for this stack of " .. count .. ")";
+            text = text .. " (x" .. count .. ": " ..
+                   GetCoinTextureString(price) .. ")";
         end
         GameTooltip:AddLine(text, 1, 1, 1);
     end
