@@ -102,6 +102,10 @@ local function YAUIX_UpdateItemTooltip(tooltip)
     local link = select(2, tooltip:GetItem());
     local _, _, _, level, _, type, _, _, slot, _, price = GetItemInfo(link);
 
+    if select(1, tooltip:GetItem()) == "" then
+        return;
+    end
+
     local id = string.sub(link, 18, string.len(link));
     id = string.sub(id, 1, string.find(id, ":") - 1);
     for i = 1, select("#", tooltip:GetRegions()) do
