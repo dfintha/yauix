@@ -553,10 +553,10 @@ local function YAUIX_UpdateNameplates(token, driver)
             text:SetTextColor(1, 1, 0, 1);
             text:SetText("(Elite)");
         elseif (classification == "rareelite") then
-            text:SetTextColor(0.5, 0.5, 0.5, 1);
+            text:SetTextColor(0.75, 0.75, 0.75, 1);
             text:SetText("(Rare Elite)");
         elseif (classification == "rare") then
-            text:SetTextColor(0.5, 0.5, 0.5, 1);
+            text:SetTextColor(0.75, 0.75, 0.75, 1);
             text:SetText("(Rare)");
         else
             text:SetTextColor(1, 1, 1, 1);
