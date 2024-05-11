@@ -514,6 +514,55 @@ local function YAUIX_ShowOrHideBarOverlays()
     end
 end
 
+local function YAUIX_UpdateNameplates(token, driver)
+    local nameplates = C_NamePlate.GetNamePlates(true);
+    local count = table.getn(nameplates);
+    if count == 0 then
+        return;
+    end
+
+    for _, nameplate in pairs(nameplates) do
+        local unit = nameplate.UnitFrame.displayedUnit;
+        local level = UnitLevel(unit);
+        local classification = UnitClassification(unit);
+
+        local parent = nameplate.UnitFrame;
+        local text = parent.ClassificationText;
+        if not text then
+            text = parent:CreateFontString("ClassificationText", "OVERLAY");
+            if not text then
+                return;
+            end
+            parent.ClassificationText = text;
+        end
+
+        text:SetParent(nameplate.UnitFrame);
+        text:SetWidth(parent:GetWidth());
+        text:SetHeight(parent.name:GetHeight());
+        text:SetPoint("TOPLEFT", parent, "TOPLEFT", 0, parent.name:GetHeight() - 2);
+        text:SetFont("Fonts\\FRIZQT__.TTF", 10, "OUTLINE");
+        text:SetJustifyH("CENTER");
+        text:SetJustifyV("TOP");
+
+        if (classification == "worldboss") then
+            text:SetTextColor(1, 1, 0, 1);
+            text:SetText("(Boss)");
+        elseif (classification == "elite") then
+            text:SetTextColor(1, 1, 0, 1);
+            text:SetText("(Elite)");
+        elseif (classification == "rareelite") then
+            text:SetTextColor(0.5, 0.5, 0.5, 1);
+            text:SetText("(Rare Elite)");
+        elseif (classification == "rare") then
+            text:SetTextColor(0.5, 0.5, 0.5, 1);
+            text:SetText("(Rare)");
+        else
+            text:SetTextColor(1, 1, 1, 1);
+            text:SetText("");
+        end
+    end
+end
+
 -- Entry Point and Event Dispatch
 
 local function YAUIX_InitializeUIElements()
@@ -569,6 +618,8 @@ function YAUIX_Initialize(self)
 
     GameTooltip:HookScript("OnTooltipSetUnit", YAUIX_UpdateUnitTooltip);
     GameTooltip:HookScript("OnTooltipSetItem", YAUIX_UpdateItemTooltip);
+
+    WorldFrame:HookScript("OnUpdate", YAUIX_UpdateNameplates);
 
     YAUIX_InitializeUIElements();
 end
