@@ -536,6 +536,8 @@ local function YAUIX_UpdateNameplates(token, driver)
             parent.ClassificationText = text;
         end
 
+        parent.name:SetFont("Fonts\\FRIZQT__.TTF", 12, "OUTLINE");
+
         text:SetParent(nameplate.UnitFrame);
         text:SetWidth(parent:GetWidth());
         text:SetHeight(parent.name:GetHeight());
