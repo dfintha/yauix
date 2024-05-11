@@ -339,7 +339,7 @@ local function YAUIX_UpdateQuestLog()
     local money = GetQuestLogRewardMoney();
 
     local anchor = QuestLogQuestDescription;
-    if QuestLogSpellLearnText then
+    if QuestLogSpellLearnText:IsVisible() then
         for i = 1, 9 do
             local attempt = _G["QuestLogItem" .. i .. "IconTexture"];
             if attempt and attempt:IsVisible() then
