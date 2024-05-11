@@ -19,6 +19,7 @@ own interface extension add-on with only the functionality that I actually need.
   screen.
 - Enhance the experience and reputations bars with more sensible, always present
   information strings.
+- Show unit classification for special units in their nameplates.
 
 ## License
 
