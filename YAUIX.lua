@@ -177,7 +177,7 @@ local function YAUIX_UpdateQuestTracker()
 
             -- Title
             if objectives > 0 then
-                text = _G["QuestWatchLine" .. line];
+                local text = _G["QuestWatchLine" .. line];
                 text:SetFont("Fonts\\FRIZQT__.TTF", 15, "");
                 text:SetText(prefix .. text:GetText());
                 text:SetTextColor(
@@ -200,7 +200,7 @@ local function YAUIX_UpdateQuestTracker()
             -- Objectives
             for j = 1, objectives do
                 local done = select(3, GetQuestLogLeaderBoard(j, index));
-                text = _G["QuestWatchLine" .. line];
+                local text = _G["QuestWatchLine" .. line];
                 text:SetFont("Fonts\\FRIZQT__.TTF", 13, "");
                 text:SetText("   " .. string.sub(text:GetText(), 3));
                 if done and done == true then
