@@ -1,3 +1,9 @@
+-- Constants
+
+local YAUIX_FontFrizQuadrata = "Fonts\\FRIZQT__.TTF";
+local YAUIX_FontArialNarrow = "Fonts\\ARIALN.TTF";
+local YAUIX_PlayerMaxLevel = 60;
+
 -- Globals
 
 local YAUIX_CurrentItemBagIndex = nil;
@@ -17,7 +23,7 @@ end
 
 local function YAUIX_MakeFontStringInvisible(element)
     if element then
-        element:SetFont("Fonts\\FRIZQT__.TTF", 0.1, "");
+        element:SetFont(YAUIX_FontFrizQuadrata, 0.1, "");
     end
 end
 
@@ -35,7 +41,7 @@ end
 -- Callbacks
 
 local function YAUIX_DisplayRequiredKillCountToLevelUp(text)
-    if UnitLevel("player") == 60 then
+    if UnitLevel("player") == YAUIX_PlayerMaxLevel then
         return;
     end
     if not string.find(text, "dies, you gain") then
@@ -178,7 +184,7 @@ local function YAUIX_UpdateQuestTracker()
             -- Title
             if objectives > 0 then
                 local text = _G["QuestWatchLine" .. line];
-                text:SetFont("Fonts\\FRIZQT__.TTF", 15, "");
+                text:SetFont(YAUIX_FontFrizQuadrata, 15, "");
                 text:SetText(prefix .. text:GetText());
                 text:SetTextColor(
                     questTextColor.r,
@@ -201,7 +207,7 @@ local function YAUIX_UpdateQuestTracker()
             for j = 1, objectives do
                 local done = select(3, GetQuestLogLeaderBoard(j, index));
                 local text = _G["QuestWatchLine" .. line];
-                text:SetFont("Fonts\\FRIZQT__.TTF", 13, "");
+                text:SetFont(YAUIX_FontFrizQuadrata, 13, "");
                 text:SetText("   " .. string.sub(text:GetText(), 3));
                 if done and done == true then
                     text:SetTextColor(1, 1, 1, 1);
@@ -242,7 +248,7 @@ local function YAUIX_FormatHealthBar(unit, parent, short, size)
             parent.HealthOverlay,
             parent,
             parent,
-            "Fonts\\FRIZQT__.TTF",
+            YAUIX_FontFrizQuadrata,
             size
         );
     end
@@ -287,7 +293,7 @@ local function YAUIX_FormatResourceBar(unit, parent, short, size)
             parent.ResourceOverlay,
             parent,
             parent,
-            "Fonts\\FRIZQT__.TTF",
+            YAUIX_FontFrizQuadrata,
             size
         );
     end
@@ -321,7 +327,7 @@ local function YAUIX_UpdateTargetFrame(self)
 end
 
 local function YAUIX_UpdateQuestLog()
-    if UnitLevel("player") == 60 then
+    if UnitLevel("player") == YAUIX_PlayerMaxLevel then
         return;
     end
 
@@ -389,7 +395,7 @@ local function YAUIX_UpdateCoordinateFontString()
             "GameFontHighlight"
         );
         YAUIX_CoordinateFontString:SetPoint("BOTTOMRIGHT", -10, 12);
-        YAUIX_CoordinateFontString:SetFont("Fonts\\FRIZQT__.TTF", 12.5, "OUTLINE");
+        YAUIX_CoordinateFontString:SetFont(YAUIX_FontFrizQuadrata, 12.5, "OUTLINE");
         YAUIX_CoordinateFontString:SetTextColor(1, 1, 1, 1);
     end
 
@@ -407,7 +413,7 @@ local function YAUIX_UpdateCoordinateFontString()
 end
 
 local function YAUIX_ReplaceXPBarText()
-    if UnitLevel("player") == 60 then
+    if UnitLevel("player") == YAUIX_PlayerMaxLevel then
         return;
     end
 
@@ -418,7 +424,7 @@ local function YAUIX_ReplaceXPBarText()
             bar.DetailsFontString,
             MainMenuBarOverlayFrame,
             MainMenuExpBar,
-            "Fonts\\ARIALN.ttf",
+            YAUIX_FontArialNarrow,
             12.5
         );
     end
@@ -445,7 +451,7 @@ local function YAUIX_ReplaceReputationBarText()
             bar.DetailsFontString,
             bar.OverlayFrame,
             bar.OverlayFrame,
-            "Fonts\\ARIALN.ttf",
+            YAUIX_FontArialNarrow,
             12
         );
 
@@ -536,13 +542,13 @@ local function YAUIX_UpdateNameplates(token, driver)
             parent.ClassificationText = text;
         end
 
-        parent.name:SetFont("Fonts\\FRIZQT__.TTF", 12, "OUTLINE");
+        parent.name:SetFont(YAUIX_FontFrizQuadrata, 12, "OUTLINE");
 
         text:SetParent(nameplate.UnitFrame);
         text:SetWidth(parent:GetWidth());
         text:SetHeight(parent.name:GetHeight());
         text:SetPoint("TOPLEFT", parent, "TOPLEFT", 0, parent.name:GetHeight() - 2);
-        text:SetFont("Fonts\\FRIZQT__.TTF", 10, "OUTLINE");
+        text:SetFont(YAUIX_FontFrizQuadrata, 10, "OUTLINE");
         text:SetJustifyH("CENTER");
         text:SetJustifyV("TOP");
 
