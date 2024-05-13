@@ -1,7 +1,6 @@
 -- Constants
 
 local YAUIX_FontFrizQuadrata = "Fonts\\FRIZQT__.TTF";
-local YAUIX_FontArialNarrow = "Fonts\\ARIALN.TTF";
 local YAUIX_PlayerMaxLevel = 60;
 
 -- Globals
@@ -424,8 +423,8 @@ local function YAUIX_ReplaceXPBarText()
             bar.DetailsFontString,
             MainMenuBarOverlayFrame,
             MainMenuExpBar,
-            YAUIX_FontArialNarrow,
-            12.5
+            YAUIX_FontFrizQuadrata,
+            10.5
         );
     end
 
@@ -451,8 +450,8 @@ local function YAUIX_ReplaceReputationBarText()
             bar.DetailsFontString,
             bar.OverlayFrame,
             bar.OverlayFrame,
-            YAUIX_FontArialNarrow,
-            12
+            YAUIX_FontFrizQuadrata,
+            9.5
         );
 
         bar.DetailsFontString:SetPoint(
