@@ -23,6 +23,7 @@ end
 local function YAUIX_MakeFontStringInvisible(element)
     if element then
         element:SetFont(YAUIX_FontFrizQuadrata, 0.05, "");
+        element:SetTextColor(1, 1, 1, 0);
     end
 end
 
