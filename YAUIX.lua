@@ -27,9 +27,9 @@ local function YAUIX_MakeFontStringInvisible(element)
     end
 end
 
-local function YAUIX_InitializeBarOverlay(overlay, parent, anchor, font, size)
+local function YAUIX_InitializeBarOverlay(overlay, parent, anchor, size)
     overlay:SetParent(parent);
-    overlay:SetFont(font, size, "OUTLINE");
+    overlay:SetFont(YAUIX_FontFrizQuadrata, size, "OUTLINE");
     overlay:SetTextColor(1, 1, 1, 1);
     overlay:SetPoint("TOPLEFT", anchor, "TOPLEFT", 0, 0);
     overlay:SetWidth(anchor:GetWidth());
@@ -248,7 +248,6 @@ local function YAUIX_FormatHealthBar(unit, parent, short, size)
             parent.HealthOverlay,
             parent,
             parent,
-            YAUIX_FontFrizQuadrata,
             size
         );
     end
@@ -293,7 +292,6 @@ local function YAUIX_FormatResourceBar(unit, parent, short, size)
             parent.ResourceOverlay,
             parent,
             parent,
-            YAUIX_FontFrizQuadrata,
             size
         );
     end
@@ -424,7 +422,6 @@ local function YAUIX_ReplaceXPBarText()
             bar.DetailsFontString,
             MainMenuBarOverlayFrame,
             MainMenuExpBar,
-            YAUIX_FontFrizQuadrata,
             10.5
         );
     end
@@ -451,7 +448,6 @@ local function YAUIX_ReplaceReputationBarText()
             bar.DetailsFontString,
             bar.OverlayFrame,
             bar.OverlayFrame,
-            YAUIX_FontFrizQuadrata,
             9.5
         );
 
