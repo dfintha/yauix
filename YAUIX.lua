@@ -38,6 +38,24 @@ local function YAUIX_InitializeBarOverlay(overlay, parent, anchor, size)
     overlay:SetJustifyV("CENTER");
 end
 
+local function YAUIX_UnitIsPartyPet(unit)
+    for i = 1, 4 do
+        if UnitGUID(unit) == UnitGUID("partypet" .. i) then
+            return true;
+        end
+    end
+    return false
+end
+
+local function YAUIX_UnitIsRaidPet(unit)
+    for i = 1, 40 do
+        if UnitGUID(unit) == UnitGUID("raidpet" .. i) then
+            return true;
+        end
+    end
+    return false
+end
+
 -- Callbacks
 
 local function YAUIX_DisplayRequiredKillCountToLevelUp(text)
@@ -262,9 +280,13 @@ local function YAUIX_FormatHealthBar(unit, parent, short, size)
 
     local text = "";
     local player = UnitIsPlayer(unit) and
-                   (UnitGUID(unit) ~= UnitGUID("player"));
+                   (UnitGUID(unit) ~= UnitGUID("player")) and
+                   not UnitInParty(unit) and
+                   not UnitInRaid(unit);
     local pet = string.sub(UnitGUID(unit), 1, 4) == "Pet-" and
-                (UnitGUID(unit) ~= UnitGUID("playerpet"));
+                (UnitGUID(unit) ~= UnitGUID("playerpet")) and
+                not YAUIX_UnitIsPartyPet(unit) and
+                not YAUIX_UnitIsRaidPet(unit);
 
     if current == 0 then
         text = "";
