@@ -76,7 +76,16 @@ local function YAUIX_DisplayRequiredKillCountToLevelUp(text)
     local gained = numbers[#numbers];
     local current = UnitXP("player");
     local required = UnitXPMax("player");
-    local count = math.ceil((required - current) / gained) - 1;
+    local rested = GetXPExhaustion() or 0;
+
+    local count = 0;
+    if (required - current) < rested or rested == 0 then
+        count = math.ceil((required - current) / gained) - 1;
+    else
+        count = math.ceil((required - current - rested) / (gained / 2))
+                + math.ceil(rested / gained)
+                - 1;
+    end
 
     if count == 1 then
         kills = " kill ";
