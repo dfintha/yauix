@@ -96,7 +96,7 @@ local function YAUIX_DisplayRequiredKillCountToLevelUp(text)
     end
 
     print(
-        "|cFF00FFFFGained " .. gained .. " experience, " .. count .. " more" ..
+        "|cFFCC66FFGained " .. gained .. " experience, " .. count .. " more" ..
         kills .. "of this unit" .. are .. "needed to level up."
     );
 end
