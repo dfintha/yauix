@@ -35,7 +35,7 @@ local function YAUIX_InitializeBarOverlay(overlay, parent, anchor, size)
     overlay:SetWidth(anchor:GetWidth());
     overlay:SetHeight(anchor:GetHeight());
     overlay:SetJustifyH("CENTER");
-    overlay:SetJustifyV("CENTER");
+    overlay:SetJustifyV("MIDDLE");
 end
 
 local function YAUIX_UnitIsPartyPet(unit)
