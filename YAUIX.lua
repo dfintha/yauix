@@ -120,6 +120,53 @@ local function YAUIX_UpdateUnitTooltip(tooltip)
         end
     end
 
+    if string.sub(guid, 1, 7) == "Player-" then
+         for i = 1, select("#", tooltip:GetRegions()) do
+            local region = select(i, tooltip:GetRegions());
+            if region and region:GetObjectType() == "FontString" then
+                local text = region:GetText();
+                if text then
+                    local _, _, name, realm = string.find(text, "(.*%w+)-(%w+)$");
+                    if name and realm then
+                        region:SetText(name);
+                        GameTooltip:AddLine("Realm: " .. realm, 1, 1, 1);
+                    else
+                        realm = GetRealmName();
+                        GameTooltip:AddLine("Realm: " .. realm, 1, 1, 1);
+                    end
+                    if not UnitIsPVP(unit) then
+                        region:SetTextColor(0.25, 0.5, 1);
+                    end
+                    break;
+                end
+            end
+        end
+    end
+
+    if string.sub(guid, 1, 4) == "Pet-" then
+        local first = true;
+        for i = 1, select("#", tooltip:GetRegions()) do
+            local region = select(i, tooltip:GetRegions());
+            if region and region:GetObjectType() == "FontString" then
+                local text = region:GetText();
+                if text then
+                    if first then
+                        if not UnitIsPVP(unit) then
+                            first = false;
+                            region:SetTextColor(0.25, 0.5, 1);
+                        end
+                    else
+                        local _, _, name, realm, kind = string.find(text, "(.*%w+)-(%w+)'s (%w+)$");
+                        if name and realm  and kind then
+                            region:SetText(name .. "'s " .. kind);
+                        end
+                        break;
+                    end
+                end
+            end
+        end
+    end
+
     local family = UnitCreatureFamily(unit);
     if family then
         GameTooltip:AddLine("Creature Family: " .. family, 1, 1, 1);
