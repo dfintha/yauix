@@ -617,6 +617,26 @@ local function YAUIX_InitializeUIElements()
     YAUIX_FormatHealthBar("playerpet", PetFrameHealthBar, true, 8);
     PetFrameHealthBar.HealthOverlay:SetParent(PetFrameHealthBarText:GetParent());
 
+    YAUIX_FormatHealthBar("party1", PartyMemberFrame1HealthBar, true, 8);
+    PartyMemberFrame1HealthBar.HealthOverlay:SetParent(PartyMemberFrame1HealthBar);
+    YAUIX_FormatResourceBar("party1", PartyMemberFrame1ManaBar, true, 8);
+    PartyMemberFrame1ManaBar.ResourceOverlay:SetParent(PartyMemberFrame1ManaBar);
+
+    YAUIX_FormatHealthBar("party2", PartyMemberFrame2HealthBar, true, 8);
+    PartyMemberFrame2HealthBar.HealthOverlay:SetParent(PartyMemberFrame2HealthBar);
+    YAUIX_FormatResourceBar("party2", PartyMemberFrame2ManaBar, true, 8);
+    PartyMemberFrame2ManaBar.ResourceOverlay:SetParent(PartyMemberFrame2ManaBar);
+
+    YAUIX_FormatHealthBar("party3", PartyMemberFrame3HealthBar, true, 8);
+    PartyMemberFrame3HealthBar.HealthOverlay:SetParent(PartyMemberFrame3HealthBar);
+    YAUIX_FormatResourceBar("party3", PartyMemberFrame3ManaBar, true, 8);
+    PartyMemberFrame3ManaBar.ResourceOverlay:SetParent(PartyMemberFrame3ManaBar);
+
+    YAUIX_FormatHealthBar("party4", PartyMemberFrame4HealthBar, true, 8);
+    PartyMemberFrame4HealthBar.HealthOverlay:SetParent(PartyMemberFrame4HealthBar);
+    YAUIX_FormatResourceBar("party4", PartyMemberFrame4ManaBar, true, 8);
+    PartyMemberFrame4ManaBar.ResourceOverlay:SetParent(PartyMemberFrame4ManaBar);
+
     YAUIX_MakeFontStringInvisible(PetFrameManaBarTextLeft);
     YAUIX_MakeFontStringInvisible(PetFrameManaBarTextRight);
     YAUIX_MakeFontStringInvisible(PetFrameManaBarText);
@@ -665,15 +685,31 @@ function YAUIX_HandleIncomingEvent(self, event, ...)
         YAUIX_FormatHealthBar("target", TargetFrameHealthBar, false, 9.5);
         YAUIX_FormatHealthBar("player", PlayerFrameHealthBar, false, 9.5);
         YAUIX_FormatHealthBar("playerpet", PetFrameHealthBar, true, 8);
+        YAUIX_FormatHealthBar("party1", PartyMemberFrame1HealthBar, true, 8);
+        YAUIX_FormatHealthBar("party2", PartyMemberFrame2HealthBar, true, 8);
+        YAUIX_FormatHealthBar("party3", PartyMemberFrame3HealthBar, true, 8);
+        YAUIX_FormatHealthBar("party4", PartyMemberFrame4HealthBar, true, 8);
     elseif event == "UNIT_POWER_FREQUENT" then
         YAUIX_FormatResourceBar("target", TargetFrameManaBar, false, 9.5);
         YAUIX_FormatResourceBar("player", PlayerFrameManaBar, false, 9.5);
         YAUIX_FormatResourceBar("playerpet", PetFrameManaBar, true, 8);
+        YAUIX_FormatResourceBar("party1", PartyMemberFrame1ManaBar, true, 8);
+        YAUIX_FormatResourceBar("party2", PartyMemberFrame2ManaBar, true, 8);
+        YAUIX_FormatResourceBar("party3", PartyMemberFrame3ManaBar, true, 8);
+        YAUIX_FormatResourceBar("party4", PartyMemberFrame4ManaBar, true, 8);
     elseif event == "PLAYER_ENTERING_WORLD" then
         YAUIX_FormatHealthBar("player", PlayerFrameHealthBar, false, 9.5);
         YAUIX_FormatResourceBar("player", PlayerFrameManaBar, false, 9.5);
         YAUIX_FormatHealthBar("playerpet", PetFrameHealthBar, true, 8);
         YAUIX_FormatResourceBar("playerpet", PetFrameManaBar, true, 8);
+        YAUIX_FormatHealthBar("party1", PartyMemberFrame1HealthBar, true, 8);
+        YAUIX_FormatResourceBar("party1", PartyMemberFrame1ManaBar, true, 8);
+        YAUIX_FormatHealthBar("party2", PartyMemberFrame2HealthBar, true, 8);
+        YAUIX_FormatResourceBar("party2", PartyMemberFrame2ManaBar, true, 8);
+        YAUIX_FormatHealthBar("party3", PartyMemberFrame3HealthBar, true, 8);
+        YAUIX_FormatResourceBar("party3", PartyMemberFrame3ManaBar, true, 8);
+        YAUIX_FormatHealthBar("party4", PartyMemberFrame4HealthBar, true, 8);
+        YAUIX_FormatResourceBar("party4", PartyMemberFrame4ManaBar, true, 8);
     elseif event == "CHAT_MSG_COMBAT_XP_GAIN" then
         YAUIX_DisplayRequiredKillCountToLevelUp(arg1);
     elseif event == "MERCHANT_SHOW" then
