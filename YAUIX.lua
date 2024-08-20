@@ -652,6 +652,7 @@ function YAUIX_Initialize(self)
     self:RegisterEvent("UNIT_POWER_FREQUENT");
     self:RegisterEvent("CHAT_MSG_COMBAT_XP_GAIN");
     self:RegisterEvent("PLAYER_ENTERING_WORLD");
+    self:RegisterEvent("GROUP_ROSTER_UPDATE")
     self:RegisterEvent("MERCHANT_SHOW");
     self:RegisterEvent("MERCHANT_CLOSED");
 
@@ -710,6 +711,9 @@ function YAUIX_HandleIncomingEvent(self, event, ...)
         YAUIX_FormatResourceBar("party3", PartyMemberFrame3ManaBar, true, 8);
         YAUIX_FormatHealthBar("party4", PartyMemberFrame4HealthBar, true, 8);
         YAUIX_FormatResourceBar("party4", PartyMemberFrame4ManaBar, true, 8);
+    elseif event == "GROUP_ROSTER_UPDATE" then
+        YAUIX_FormatHealthBar("target", TargetFrameHealthBar, false, 9.5);
+        YAUIX_FormatResourceBar("target", TargetFrameManaBar, false, 9.5);
     elseif event == "CHAT_MSG_COMBAT_XP_GAIN" then
         YAUIX_DisplayRequiredKillCountToLevelUp(arg1);
     elseif event == "MERCHANT_SHOW" then
