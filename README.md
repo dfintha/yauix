@@ -25,6 +25,8 @@ own interface extension add-on with only the functionality that I actually need.
   information strings.
 - Show unit classification for special units in their nameplates.
 - Reformat unit tooltips so realm names are less intrusive.
+- Show the equivalent level to skill levels on the skill frame and colorize this
+  information based on your level.
 
 ## License
 

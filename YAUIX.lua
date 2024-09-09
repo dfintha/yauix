@@ -645,6 +645,41 @@ local function YAUIX_UpdateNameplates(token, driver)
     end
 end
 
+local function YAUIX_UpdateSkillFrame(which, index, count)
+    local _, header, expanded, rank, _, modifier, max, _, _, _, _, _ = GetSkillLineInfo(index);
+    if (header or expanded or max == 1) then
+        return;
+    end
+
+    local bar = _G["SkillRankFrame".. which .."SkillRank"];
+
+    local gray = GRAY_FONT_COLOR_CODE;
+    local green = GREEN_FONT_COLOR_CODE;
+    local yellow = YELLOW_FONT_COLOR_CODE;
+    local blue = BLUE_FONT_COLOR_CODE;
+    local reset = FONT_COLOR_CODE_CLOSE;
+
+    local color = gray;
+    local level = UnitLevel("player");
+    rank = math.floor(rank / 5);
+    if rank >= level then
+        color = blue;
+    elseif rank >= level - 2 then
+        color = yellow;
+    elseif rank >= level - 6 then
+        color = green
+    end
+
+    bar:SetText(bar:GetText() .. gray .. " [" .. color .. rank .. reset);
+
+    modifier = math.floor(modifier / 5);
+    if (modifier > 0) then
+        bar:SetText(bar:GetText() .. color .. " + " .. modifier);
+    end
+
+    bar:SetText(bar:GetText() .. gray .. "]" .. reset);
+end
+
 -- Entry Point and Event Dispatch
 
 local function YAUIX_InitializeUIElements()
@@ -714,6 +749,7 @@ function YAUIX_Initialize(self)
     hooksecurefunc("ExpBar_Update", YAUIX_ReplaceReputationBarText);
     hooksecurefunc("ToggleWorldMap", YAUIX_ShowOrHideBarOverlays);
     hooksecurefunc("OpenWorldMap", YAUIX_ShowOrHideBarOverlays);
+    hooksecurefunc("SkillFrame_SetStatusBar", YAUIX_UpdateSkillFrame);
     hooksecurefunc(WorldMapFrame, "Maximize", YAUIX_ShowOrHideBarOverlays);
     hooksecurefunc(WorldMapFrame, "Minimize", YAUIX_ShowOrHideBarOverlays);
 
