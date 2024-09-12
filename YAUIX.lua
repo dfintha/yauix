@@ -241,6 +241,14 @@ local function YAUIX_UpdateItemTooltip(tooltip)
 end
 
 local function YAUIX_UpdateQuestTracker()
+    _G["QuestWatchLine1"]:SetPoint(
+        "TOPLEFT",
+        _G["QuestWatchFrame"],
+        "TOPLEFT",
+        -50,
+        0
+    );
+
     local line = 1;
     for i = 1, GetNumQuestWatches() do
         local index = GetQuestIndexForWatch(i);
