@@ -175,12 +175,8 @@ local function YAUIX_UpdateUnitTooltip(tooltip)
 end
 
 local function YAUIX_UpdateItemTooltip(tooltip)
-    if YAUIX_InMerchantFrame then
-        return;
-    end
-
     local link = select(2, tooltip:GetItem());
-    local _, _, _, level, _, type, _, _, slot, _, price = GetItemInfo(link);
+    local _, _, _, level, _, type, _, stack, slot, _, price = GetItemInfo(link);
 
     if select(1, tooltip:GetItem()) == "" then
         return;
@@ -220,8 +216,18 @@ local function YAUIX_UpdateItemTooltip(tooltip)
 
     GameTooltip:AddLine(" ", 1, 1, 1);
 
+    -- Stack Count
+    if stack > 1 then
+        GameTooltip:AddLine("Stacks to " .. stack .. " pieces.", 1, 1, 1);
+    end
+
+    -- Item Level
+    if not unequippable then
+        GameTooltip:AddLine("Item Level: " .. level, 1, 1, 1);
+    end
+
     -- Sell Price
-    if not unsellable then
+    if not unsellable and not YAUIX_InMerchantFrame then
         local text = "Sell Price: ";
         text = text .. GetCoinTextureString(price);
         if count > 1 then
@@ -230,11 +236,6 @@ local function YAUIX_UpdateItemTooltip(tooltip)
                    GetCoinTextureString(price) .. ")";
         end
         GameTooltip:AddLine(text, 1, 1, 1);
-    end
-
-    -- Item Level
-    if not unequippable then
-        GameTooltip:AddLine("Item Level: " .. level, 1, 1, 1);
     end
 
     GameTooltip:Show();
