@@ -1,4 +1,4 @@
-## Interface: 11504
+## Interface: 11504,11505
 ## Title: YAUIX
 ## Notes: Yet Another UI eXtension
 ## Author: dfintha
