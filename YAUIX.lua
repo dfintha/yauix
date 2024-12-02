@@ -3,6 +3,7 @@
 local YAUIX_FontFrizQuadrata = "Fonts\\FRIZQT__.TTF";
 local YAUIX_PlayerMaxLevel = 60;
 local YAUIX_ColorizeTeal = "|cFF00CCCC";
+local YAUIX_ColorizeXPPurple = "|cFFCC66FF";
 
 -- Globals
 
@@ -99,8 +100,9 @@ local function YAUIX_DisplayRequiredKillCountToLevelUp(text)
     end
 
     print(
-        "|cFFCC66FFGained " .. gained .. " experience, " .. count .. " more" ..
-        kills .. "of this unit" .. are .. "needed to level up."
+        YAUIX_ColorizeXPPurple .. "Gained " .. gained .. " experience, " ..
+        count .. " more" .. kills .. "of this unit" .. are .. "needed to " ..
+        "level up."
     );
 end
 
