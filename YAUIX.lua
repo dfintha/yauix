@@ -2,12 +2,15 @@
 
 local YAUIX_FontFrizQuadrata = "Fonts\\FRIZQT__.TTF";
 local YAUIX_PlayerMaxLevel = 60;
+local YAUIX_ColorizeTeal = "|cFF00CCCC";
 
 -- Globals
 
 local YAUIX_CurrentItemBagIndex = nil;
 local YAUIX_CurrentItemSlotIndex = nil;
 local YAUIX_InMerchantFrame = false;
+local YAUIX_InRollScope = false;
+local YAUIX_RollScopeEntries = {};
 
 -- Utility Functions
 
@@ -689,6 +692,56 @@ local function YAUIX_UpdateSkillFrame(which, index, count)
     bar:SetText(bar:GetText() .. gray .. "]" .. reset);
 end
 
+local function YAUIX_ParsePotentialRollEvent(message)
+    local author, result, min, max = string.match(message, "(.+) rolls (%d+) %((%d+)-(%d+)%)");
+    if author and tonumber(min) == 1 and tonumber(max) == 100 then
+        if YAUIX_RollScopeEntries[author] == nil then
+            YAUIX_RollScopeEntries[author] = tonumber(result);
+        end
+    end
+end
+
+local function YAUIX_StartRollScope()
+    if YAUIX_InRollScope then
+        print(YAUIX_ColorizeTeal .. "YAUIX: Already in a roll scope!");
+        return;
+    end
+
+    YAUIX_InRollScope = true;
+    YAUIX_RollScopeEntries = {};
+    print(YAUIX_ColorizeTeal .. "YAUIX: Roll scope started.");
+end
+
+local function YAUIX_EndRollScope()
+    if not YAUIX_InRollScope then
+        print(YAUIX_ColorizeTeal .. "YAUIX: Not in a roll scope!");
+        return;
+    end
+
+    local author = nil;
+    local result = 0;
+    for key, value in pairs(YAUIX_RollScopeEntries) do
+        if value > result then
+            result = value;
+            author = key;
+        end
+    end
+
+    if author == nil then
+        print(
+            YAUIX_ColorizeTeal .. "YAUIX: Roll scope ended, no rolls were " ..
+            "committed."
+        );
+    else
+        print(
+            YAUIX_ColorizeTeal .. "YAUIX: Roll scope ended, the winner is " ..
+            author .. " with a roll of " .. result .. "."
+        );
+    end
+
+    YAUIX_InRollScope = false;
+end
+
 -- Entry Point and Event Dispatch
 
 local function YAUIX_InitializeUIElements()
@@ -738,10 +791,25 @@ local function YAUIX_InitializeUIElements()
     YAUIX_MakeFontStringInvisible(ReputationWatchBar.OverlayFrame.Text);
 end
 
+function YAUIX_HandleSlashCommand(message, box)
+    local _, _, verb, arguments = string.find(message, "%s?([%w-]+)%s?(.*)");
+    if verb == "roll-start" then
+        YAUIX_StartRollScope();
+    elseif verb == "roll-end" then
+        YAUIX_EndRollScope();
+    end
+end
+
+function YAUIX_InitializeSlashCommands()
+    SLASH_YAUIX1 = "/yauix";
+    SlashCmdList["YAUIX"] = YAUIX_HandleSlashCommand;
+end
+
 function YAUIX_Initialize(self)
     self:RegisterEvent("UNIT_HEALTH_FREQUENT");
     self:RegisterEvent("UNIT_POWER_FREQUENT");
     self:RegisterEvent("CHAT_MSG_COMBAT_XP_GAIN");
+    self:RegisterEvent("CHAT_MSG_SYSTEM")
     self:RegisterEvent("PLAYER_ENTERING_WORLD");
     self:RegisterEvent("GROUP_ROSTER_UPDATE")
     self:RegisterEvent("MERCHANT_SHOW");
@@ -770,6 +838,7 @@ function YAUIX_Initialize(self)
     WorldFrame:HookScript("OnUpdate", YAUIX_UpdateNameplates);
 
     YAUIX_InitializeUIElements();
+    YAUIX_InitializeSlashCommands();
 end
 
 function YAUIX_HandleIncomingEvent(self, event, ...)
@@ -812,5 +881,7 @@ function YAUIX_HandleIncomingEvent(self, event, ...)
         YAUIX_InMerchantFrame = true;
     elseif event == "MERCHANT_CLOSED" then
         YAUIX_InMerchantFrame = false;
+    elseif event == "CHAT_MSG_SYSTEM" and YAUIX_InRollScope then
+        YAUIX_ParsePotentialRollEvent(...);
     end
 end

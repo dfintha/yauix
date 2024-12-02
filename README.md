@@ -27,8 +27,9 @@ own interface extension add-on with only the functionality that I actually need.
 - Reformat unit tooltips so realm names are less intrusive.
 - Show the equivalent level to skill levels on the skill frame and colorize this
   information based on your level.
+- Provides the `/yauix start-roll` and `/yauix end-roll` slash commands to track
+  first 1 to 100 rolls per author in the scope of a period.
 
 ## License
 
 The add-on is under WTFPL. For more information, see the LICENSE file.
-
