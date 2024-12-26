@@ -29,6 +29,8 @@ own interface extension add-on with only the functionality that I actually need.
   information based on your level.
 - Provides the `/yauix start-roll` and `/yauix end-roll` slash commands to track
   first 1 to 100 rolls per author in the scope of a period.
+- Shows the quest levels in the quest log in their tags (the part showing if the
+  quest is a Dungeon/Raid/Group/PvP quest).
 
 ## License
 

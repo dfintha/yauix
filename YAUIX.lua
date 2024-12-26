@@ -416,6 +416,27 @@ local function YAUIX_UpdateTargetFrame(self)
     YAUIX_FormatResourceBar("target", TargetFrameManaBar, false, 9.5);
 end
 
+local function YAUIX_UpdateQuestLogLevels()
+    for i = 1, GetNumQuestLogEntries() do
+        local index = i + FauxScrollFrame_GetOffset(QuestLogListScrollFrame);
+        local title, level, group, _, _, complete = GetQuestLogTitle(index);
+        if level ~= 0 then
+            local tag = _G["QuestLogTitle" .. i .. "Tag"];
+            if tag == nil then
+                break;
+            end
+
+            if complete then
+                tag:SetText("(" .. level .. ", Complete)");
+            elseif group ~= nil then
+                tag:SetText("(" .. level .. ", " .. group .. ")");
+            else
+                tag:SetText("(" .. level .. ", Solo)");
+            end
+        end
+    end
+end
+
 local function YAUIX_UpdateQuestLog()
     if UnitLevel("player") == YAUIX_PlayerMaxLevel then
         return;
@@ -824,6 +845,7 @@ function YAUIX_Initialize(self)
     hooksecurefunc("ContainerFrameItemButton_OnLeave", YAUIX_ClearCurrentItem);
     hooksecurefunc("TargetFrame_Update", YAUIX_UpdateTargetFrame);
     hooksecurefunc("QuestLog_UpdateQuestDetails", YAUIX_UpdateQuestLog);
+    hooksecurefunc("QuestLog_Update", YAUIX_UpdateQuestLogLevels);
     hooksecurefunc("ExpBar_Update", YAUIX_ReplaceXPBarText);
     hooksecurefunc("ExpBar_Update", YAUIX_ReplaceReputationBarText);
     hooksecurefunc("ToggleWorldMap", YAUIX_ShowOrHideBarOverlays);
